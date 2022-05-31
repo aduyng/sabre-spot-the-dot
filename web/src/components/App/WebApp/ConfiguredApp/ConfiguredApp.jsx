@@ -45,6 +45,7 @@ export default function ConfiguredApp() {
     config: {
       apiKey: "AIzaSyDbPR1cFfplX8xbKZ46TqUv6AFiB_8eivc",
       authDomain: "sabre-spot-the-dot.firebaseapp.com",
+      databaseURL: "https://sabre-spot-the-dot-default-rtdb.firebaseio.com",
       projectId: "sabre-spot-the-dot",
       storageBucket: "sabre-spot-the-dot.appspot.com",
       messagingSenderId: "205994041605",

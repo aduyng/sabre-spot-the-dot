@@ -30,25 +30,23 @@ jobs:
     with:
       GCP_REGION: "us-central1"
       LOG_LEVEL: "info"
-      FIREBASE_API_KEY: "AIzaSyDxAZCXFbbHEVkjP_CZe66rF_nPFWake7I"
-      FIREBASE_AUTH_DOMAIN: "spot-the-dot-jupiter-production.firebaseapp.com"
-      FIREBASE_DATABASE_URL: "https://spot-the-dot-jupiter-production-default-rtdb.firebaseio.com"
+      FIREBASE_API_KEY: "AIzaSyDbPR1cFfplX8xbKZ46TqUv6AFiB_8eivc"
+      FIREBASE_AUTH_DOMAIN: "sabre-spot-the-dot.firebaseapp.com"
+      FIREBASE_DATABASE_URL: "https://sabre-spot-the-dot-default-rtdb.firebaseio.com"
       FIREBASE_APP_ID: "1:498303805680:web:3597434a410bbae011ba35"
-      FIREBASE_PROJECT_ID: "spot-the-dot-jupiter-production"
-      FIREBASE_STORAGE_BUCKET: "spot-the-dot-jupiter-production.appspot.com"
-      FIREBASE_MESSAGING_SENDER_ID: "498303805680"
-      FIREBASE_MEASUREMENT_ID: "G-BJFG6K6608"
-      FIREBASE_GENERATED_MESSAGING_KEY: "BLwKnl825R8nLS84H8w632PMDNuB3DsU0nFugVXTi8LwYtNzF2iFbeEkAQuz831YkfiZ4nFOTB3hWeX80mcMXSo"
-      POSTGRES_INSTANCE_CONNECTION_NAME: "spot-the-dot-jupiter-production:us-central1:spot-the-dot-jupiter-production"
+      FIREBASE_PROJECT_ID: "sabre-spot-the-dot"
+      FIREBASE_STORAGE_BUCKET: "sabre-spot-the-dot.appspot.com"
+      FIREBASE_MESSAGING_SENDER_ID: "205994041605"
+      POSTGRES_INSTANCE_CONNECTION_NAME: "spot-the-dot:us-central1:spot-the-dot"
       POSTGRES_DB: "jupiter"
       POSTGRES_USER: "jupiter"
       STD_RUNTIME_ENV: "production"
       STD_VERSION: ${{ github.event.inputs.version }}.${{github.run_number}}
       SQL_DEBUG: "true"
-      STD_FRONTEND_BASE_URL: "https://app.spot-the-dotforlife.com"
+      STD_FRONTEND_BASE_URL: "https://sabre-spot-the-dot.web.app/"
       SHOULD_RUN_DB_MIGRATION: ${{ github.event.inputs.runDbMigration }}
     secrets:
       FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-      GCP_SERVICE_ACCOUNT_KEY: ${{ secrets.PRODUCTION_GCP_SERVICE_ACCOUNT_KEY }}
-      POSTGRES_PASSWORD: ${{ secrets.PRODUCTION_POSTGRES_PASSWORD }}
+      GCP_SERVICE_ACCOUNT_KEY: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
+      POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
 
