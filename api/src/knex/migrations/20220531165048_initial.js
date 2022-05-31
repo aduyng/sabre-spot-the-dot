@@ -16,7 +16,7 @@ exports.up = async knex => {
     table.text("avatarUrl");
   });
 
-  await knex.schema.createTable("Product", table => {
+  await knex.schema.createTable("Project", table => {
     table
       .bigIncrements("id")
       .unsigned()
@@ -25,7 +25,7 @@ exports.up = async knex => {
     table.string("name").notNullable();
   });
 
-  await knex("Product").insert([
+  await knex("Project").insert([
     {
       id: 1,
       name: "Digital Experience"
@@ -40,7 +40,7 @@ exports.up = async knex => {
     }
   ]);
 
-  await fixMaxSequenceValue({ tableName: "Product", knex });
+  await fixMaxSequenceValue({ tableName: "Project", knex });
 
   await knex.schema.createTable("Role", table => {
     table
@@ -68,7 +68,7 @@ exports.up = async knex => {
 
   await fixMaxSequenceValue({ tableName: "Role", knex });
 
-  await knex.schema.createTable("UserProductRole", table => {
+  await knex.schema.createTable("UserProjectRole", table => {
     table
       .bigIncrements("id")
       .unsigned()
@@ -84,11 +84,11 @@ exports.up = async knex => {
       .onUpdate("CASCADE");
 
     table
-      .bigInteger("productId")
+      .bigInteger("projectId")
       .unsigned()
       .notNullable()
       .references("id")
-      .inTable("Product")
+      .inTable("Project")
       .onDelete("CASCADE")
       .onUpdate("CASCADE");
 
@@ -126,9 +126,9 @@ exports.up = async knex => {
 };
 
 exports.down = async knex => {
-  await knex.schema.dropTable("UserProductRole");
+  await knex.schema.dropTable("UserProjectRole");
   await knex.schema.dropTable("Role");
-  await knex.schema.dropTable("Product");
+  await knex.schema.dropTable("Project");
   await knex.schema.dropTable("ApiKey");
   await knex.schema.dropTable("User");
 };

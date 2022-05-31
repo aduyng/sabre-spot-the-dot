@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import { useSnackbar } from "notistack";
 import { useMutation, useQuery } from "@apollo/react-hooks";
-import { useParams, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import { useTranslation } from "react-i18next";
 import Card from "@material-ui/core/Card";

@@ -13,7 +13,6 @@ import last from "lodash/last";
 import isEmpty from "lodash/isEmpty";
 import CloseIcon from "@material-ui/icons/Close";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import { useConfig } from "../contexts/ConfigContext";
 import Breadcrumbs from "./Breadcrumbs/Breadcrumbs";
 
 const useStyles = makeStyles(theme => ({
@@ -72,7 +71,6 @@ export default function PageTitle({
 }) {
   const classes = useStyles();
   const history = useHistory();
-  const config = useConfig();
   const { t } = useTranslation();
   const isSmScreen = useMediaQuery(theme => theme.breakpoints.down("xs"));
   const isLgScreen = useMediaQuery(theme => theme.breakpoints.up("sm"));

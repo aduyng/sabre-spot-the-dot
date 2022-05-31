@@ -88,10 +88,23 @@ module.exports = gql`
     plainTextKey: String
   }
 
+  type Project {
+    id: ID!
+    name: String!
+  }
+
+  type Job {
+    id: ID!
+    name: String!
+  }
+
   type Query {
     config: Config
     getSession: Session
     getApiKeys: [ApiKey]
+    getProjects: [Project]
+    getProject(id: ID!): Project
+    getJobs(projectId: ID!): [Job]
   }
 
   type Mutation {
