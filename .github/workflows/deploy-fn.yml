@@ -1,0 +1,166 @@
+name: "99: [FN] Deploy"
+
+on:
+  workflow_call:
+    inputs:
+      GCP_REGION:
+        type: string
+        required: false
+        description: the region for GCP
+        default: "us-central1"
+      LOG_LEVEL:
+        type: string
+        required: false
+        description: the run-time log level
+        default: "error"
+      FIREBASE_API_KEY:
+        type: string
+        required: true
+        description: set value for FIREBASE_API_KEY
+      FIREBASE_AUTH_DOMAIN:
+        type: string
+        required: true
+        description: set value for FIREBASE_AUTH_DOMAIN
+      FIREBASE_DATABASE_URL:
+        type: string
+        required: true
+        description: set value for FIREBASE_DATABASE_URL
+      FIREBASE_APP_ID:
+        type: string
+        required: true
+        description: set value for FIREBASE_APP_ID
+      FIREBASE_MESSAGING_SENDER_ID:
+        type: string
+        required: true
+        description: set value for FIREBASE_MESSAGING_SENDER_ID
+      FIREBASE_PROJECT_ID:
+        type: string
+        required: true
+        description: set value for FIREBASE_PROJECT_ID
+      FIREBASE_STORAGE_BUCKET:
+        type: string
+        required: true
+        description: set value for FIREBASE_STORAGE_BUCKET
+      FIREBASE_MEASUREMENT_ID:
+        type: string
+        required: true
+        description: set value for FIREBASE_MEASUREMENT_ID
+      FIREBASE_GENERATED_MESSAGING_KEY:
+        type: string
+        required: true
+        description: set value for FIREBASE_GENERATED_MESSAGING_KEY
+      POSTGRES_INSTANCE_CONNECTION_NAME:
+        type: string
+        required: true
+        description: set value for POSTGRES_INSTANCE_CONNECTION_NAME
+      POSTGRES_DB:
+        type: string
+        required: true
+        description: set value for POSTGRES_DB
+      POSTGRES_USER:
+        type: string
+        required: true
+        description: set value for POSTGRES_USER
+      STD_RUNTIME_ENV:
+        type: string
+        required: true
+        description: set value for STD_RUNTIME_ENV
+      STD_VERSION:
+        type: string
+        required: true
+        description: set value for STD_VERSION
+      SQL_DEBUG:
+        type: string
+        required: true
+        description: set value for SQL_DEBUG
+      STD_FRONTEND_BASE_URL:
+        type: string
+        required: true
+        description: set value for STD_FRONTEND_BASE_URL
+      SHOULD_RUN_DB_MIGRATION:
+        type: string
+        required: false
+        description: trigger the db migration after the deployment is done
+        default: "false"
+    secrets:
+      FIREBASE_TOKEN:
+        required: true
+      GCP_SERVICE_ACCOUNT_KEY:
+        required: true
+      POSTGRES_PASSWORD:
+        required: true
+        description: set value for POSTGRES_PASSWORD
+jobs:
+  deploy-to-auto:
+    name: deploy
+    runs-on: ubuntu-latest
+    env:
+      GCP_REGION: ${{ inputs.GCP_REGION }}
+      FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: |
+          npm --prefix=ci install
+      - name: Download built artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: ${{ inputs.STD_VERSION }}.tar.gz
+
+      - name: Extract and Prepare artifacts
+        run: |
+          tar -xzvf ${{ inputs.STD_VERSION }}.tar.gz
+          rm -rf functions
+          mv output/functions functions
+
+      - name: Find and replace deploy variables
+        run: node ci/index --script=replaceDeployVariables --path="output/web/**/*.*" --from="AIzaSyAuQNeEMnUuXrcJHB4TVangvj3kRRi4fXg" --to="${{ inputs.FIREBASE_API_KEY }}" --from="sabre-spot-the-dot.firebaseapp.com" --to="${{ inputs.FIREBASE_AUTH_DOMAIN }}" --from="https://sabre-spot-the-dot.firebaseio.com" --to="${{ inputs.FIREBASE_DATABASE_URL }}" --from="sabre-spot-the-dot.appspot.com" --to="${{ inputs.FIREBASE_STORAGE_BUCKET }}" --from="1:953440884990:web:a9b069abcbb18b8d1d6daf" --to="${{ inputs.FIREBASE_APP_ID }}" --from="953440884990" --to="${{ inputs.FIREBASE_MESSAGING_SENDER_ID }}" --from="G-P7HN02PBQ0" --to="${{ inputs.FIREBASE_MEASUREMENT_ID }}" --from="BOy0ClutCObnrdJfHWdqrMIx63LH-q6CUBLwpO2uCL8DDpdcdyqu-O3LfOd_0Kapcp30rH72wJzq1BCI2AbpXYs" --to="${{ inputs.FIREBASE_GENERATED_MESSAGING_KEY }}" --from="sabre-spot-the-dot" --to="${{ inputs.FIREBASE_PROJECT_ID }}"
+
+      - name: Move output to web/build
+        run: |
+          rm -rf web/build
+          mv output/web web/build
+          rm -rf output
+
+      - name: Setting firebase config
+        uses: w9jds/firebase-action@master
+        env:
+          FIREBASE_TOKEN: "${{ secrets.FIREBASE_TOKEN }}"
+        with:
+          args: >-
+            --project "${{ inputs.FIREBASE_PROJECT_ID }}"
+            functions:config:set
+            fbase.api_key="${{ inputs.FIREBASE_API_KEY }}"
+            fbase.message_sender_id="${{ inputs.FIREBASE_MESSAGING_SENDER_ID }}"
+            fbase.app_id="${{ inputs.FIREBASE_APP_ID }}"
+            fbase.project_id="${{ inputs.FIREBASE_PROJECT_ID }}"
+            fbase.measurement_id="${{ inputs.FIREBASE_MEASUREMENT_ID }}"
+            fbase.generated_messaging_key="${{ inputs.FIREBASE_GENERATED_MESSAGING_KEY }}"
+            jupiter.runtime_env="${{ inputs.STD_RUNTIME_ENV }}"
+            jupiter.version="${{ inputs.STD_VERSION }}"
+            jupiter.build_number=$(echo "${{ inputs.GITHUB_SHA }}" | cut -c 1-8)
+            graphql.debug="true"
+            sql.debug="${{ inputs.SQL_DEBUG }}"
+            jupiter.frontend_base_url="${{ inputs.STD_FRONTEND_BASE_URL }}"
+            postgres.db="${{ inputs.POSTGRES_DB }}"
+            postgres.user="${{ inputs.POSTGRES_USER }}"
+            postgres.password="${{ secrets.POSTGRES_PASSWORD }}"
+            postgres.instance_connection_name="${{ inputs.POSTGRES_INSTANCE_CONNECTION_NAME }}"
+
+      - name: Deploy to Firebase
+        uses: w9jds/firebase-action@master
+        with:
+          args: deploy --project "${{ inputs.FIREBASE_PROJECT_ID }}" --force --only hosting,functions,storage,firestore:rules,database
+
+      - name: Create tar.gz file
+        run: |
+          tar -czvf ${{inputs.STD_VERSION}}-web.tar.gz web/build
+
+      - name: upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{inputs.STD_VERSION}}-web.tar.gz
+          path: ${{inputs.STD_VERSION}}-web.tar.gz
+          retention-days: 5

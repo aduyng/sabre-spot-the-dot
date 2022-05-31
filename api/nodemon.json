@@ -1,0 +1,7 @@
+{
+  "restartable": "rs",
+  "ignore": [".git", "node_modules/**/node_modules", "db", "test", "**/__tests__", "src/knex/migrations"],
+  "verbose": true,
+  "watch": ["src"],
+  "ext": "js,json"
+}

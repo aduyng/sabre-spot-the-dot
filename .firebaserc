@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "sabre-spot-the-dot"
+  },
+  "targets": {
+    "sabre-spot-the-dot": {
+      "hosting": {
+        "app": [
+          "sabre-spot-the-dot"
+        ]
+      }
+    }
+  }
+}

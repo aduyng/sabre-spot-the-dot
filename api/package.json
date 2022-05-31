@@ -1,0 +1,98 @@
+{
+  "name": "@sabre/spot-the-dot-api",
+  "version": "0.0.0",
+  "description": "Sabre SpotTheDot API",
+  "homepage": "https://github.com/aduyng/STD_#readme",
+  "license": "unlicensed",
+  "dependencies": {
+    "@google-cloud/pubsub": "^2.6.0",
+    "@google-cloud/storage": "^5.4.0",
+    "apollo-server-cloud-functions": "^2.18.1",
+    "axios": "^0.21.2",
+    "big-integer": "^1.6.48",
+    "bluebird": "^3.7.2",
+    "chance": "^1.1.8",
+    "date-fns": "^2.16.1",
+    "date-fns-tz": "^1.1.6",
+    "filesize": "^6.1.0",
+    "firebase-admin": "^8.13.0",
+    "fs-extra": "^9.0.1",
+    "googleapis": "^92.0.0",
+    "graphql": "^14.7.0",
+    "graphql-bigint": "^1.0.0",
+    "graphql-scalars": "^1.14.1",
+    "graphql-tag": "^2.11.0",
+    "graphql-type-json": "^0.3.2",
+    "knex": "^0.20.15",
+    "lodash": "^4.17.21",
+    "minimist": "^1.2.6",
+    "numeral": "^2.0.6",
+    "pg": "^8.3.3",
+    "tmp": "^0.2.1",
+    "uuid": "^8.3.2",
+    "validator": "^13.7.0"
+  },
+  "devDependencies": {
+    "apollo-server": "^2.25.3",
+    "apollo-server-testing": "^2.18.1",
+    "cron": "^1.8.2",
+    "env-cmd": "^10.1.0",
+    "glob": "^7.2.0",
+    "jest": "^25.5.4",
+    "jest-junit": "^12.0.0",
+    "knex-cleaner": "^1.3.1",
+    "memory-streams": "^0.1.3",
+    "nodemon": "^2.0.4"
+  },
+  "scripts": {
+    "start": "env-cmd --environments development --rc-file ./.env-cmdrc.js nodemon src/dev",
+    "start:debug": "env-cmd  --environments development --rc-file ./.env-cmdrc.js node --inspect=0.0.0.0:4001 src/dev",
+    "knex": "env-cmd --environments development --rc-file ./.env-cmdrc.js knex --knexfile=./src/knex/config.js",
+    "migrate:up": "env-cmd --environments development --rc-file ./.env-cmdrc.js npm run knex -- migrate:up",
+    "migrate:down": "env-cmd --environments development --rc-file ./.env-cmdrc.js npm run knex -- migrate:down",
+    "migrate:rollback": "env-cmd --environments development --rc-file ./.env-cmdrc.js npm run knex -- migrate:rollback",
+    "migrate:make": "env-cmd --environments development --rc-file ./.env-cmdrc.js npm run knex -- migrate:make",
+    "migrate:latest": "env-cmd --environments development --rc-file ./.env-cmdrc.js npm run knex -- migrate:latest",
+    "cli": "node src/cli/init.js"
+  },
+  "jest": {
+    "clearMocks": true,
+    "coverageReporters": [
+      "lcov",
+      "text",
+      "text-summary"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "lines": 82.98,
+        "functions": 69.05,
+        "statements": 82.92,
+        "branches": 62.71
+      }
+    },
+    "coveragePathIgnorePatterns": [
+      "<rootDir>/src/knex/migrations",
+      "<rootDir>/src/knex/data",
+      "<rootDir>/tmp",
+      "/node_modules/"
+    ],
+    "coverageDirectory": "../test-outputs/api/coverage",
+    "testEnvironment": "node",
+    "testMatch": [
+      "**/__tests__/**/*.test.js"
+    ],
+    "testPathIgnorePatterns": [
+      "/node_modules/"
+    ]
+  },
+  "jest-junit": {
+    "suiteName": "@jupiter/api",
+    "outputDirectory": "../test-outputs/api",
+    "outputName": "junit.xml",
+    "uniqueOutputName": "false",
+    "classNameTemplate": "{classname}-{title}",
+    "titleTemplate": "{classname}-{title}",
+    "ancestorSeparator": " › ",
+    "usePathForSuiteName": "true"
+  }
+}
