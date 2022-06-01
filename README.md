@@ -5,7 +5,7 @@
 ### Installation steps
 1. check out this code
     ```bash
-    git clone git@github.com:Independent-Agency-Alliance/jupiter.git spot-the-dot
+    git clone git@github.com:aduyng/sabre-spot-the-dot.git
     ```
 2. go inside of spot-the-dot folder
     ```bash
@@ -17,20 +17,19 @@
    ```
 4. install dependencies:
     ```bash
-    npm run setup
-   // or
+   npm install
    npm --prefix api install
    npm --prefix functions install
    npm --prefix web install
     ```
-   The above command will install dependencies for both `api` and `web` module. 
+   The above command will install dependencies for `api`, `web`, and `functions` modules 
 5. create the following in `postgresql`: 
     * user `postgres` 
-    * password: the postgres default password
+    * password: the postgres default password - `admin` or `postgres`
     * database name: `spot-the-dot`
     the commands are: 
     ```
-    CREATE DATABASE spot-the-dot;
+    CREATE DATABASE "spot-the-dot";
     ```
 6. initialize the database
     Inside folder `api`, run the following command
