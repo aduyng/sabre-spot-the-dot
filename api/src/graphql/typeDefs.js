@@ -98,6 +98,32 @@ module.exports = gql`
     name: String!
   }
 
+  input ScreenshotInput {
+    projectId: ID!
+    fileName: String!
+    buildUrl: String
+    buildNumber: PositiveInt
+    buildName: String
+    jobName: String!
+    jobUrl: String
+    commit: String
+    branch: String
+  }
+
+  type Screenshot {
+    id: ID!
+    name: String!
+    url: String
+    size: BigInt
+    diffUrl: String
+    diffPercentage: PositiveInt
+    status: String!
+    createdAt: BigInt
+    createdByUserId: ID
+    updatedAt: BigInt
+    updatedByUserId: ID
+  }
+
   type Query {
     config: Config
     getSession: Session
@@ -111,5 +137,6 @@ module.exports = gql`
     ping: Int
     createApiKey(description: String!): ApiKey
     deleteApiKey(id: ID!): Int
+    createScreenshotFromCI(screenshotInput: ScreenshotInput!): String
   }
 `;
