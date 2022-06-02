@@ -19,14 +19,14 @@ concurrency:
 
 jobs:
   build:
-    uses: Independent-Agency-Alliance/jupiter/.github/workflows/build-fn.yml@develop
+    uses: aduyng/sabre-spot-the-dot/.github/workflows/build-fn.yml@develop
     with:
       VERSION: ${{ github.event.inputs.version }}.${{github.run_number}}
 
   deploy:
     needs:
       - build
-    uses: Independent-Agency-Alliance/jupiter/.github/workflows/deploy-fn.yml@develop
+    uses: aduyng/sabre-spot-the-dot/.github/workflows/deploy-fn.yml@develop
     with:
       GCP_REGION: "us-central1"
       LOG_LEVEL: "info"
