@@ -39,10 +39,10 @@ jobs:
     - name: install dependencies
       if: steps.cache-primes.outputs.cache-hit != 'true'
       run: |
-        npm i
-        npm --prefix api i
-        npm --prefix web i
-        npm --prefix functions i
+        npm i --no-package-lock
+        npm --prefix api i --no-package-lock
+        npm --prefix web i --no-package-lock
+        npm --prefix functions i --no-package-lock
 
     - name: build
       run: |
