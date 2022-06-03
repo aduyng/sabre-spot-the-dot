@@ -22,6 +22,7 @@
     "@testing-library/user-event": "^7.2.1",
     "@use-firebase/app": "^0.3.3",
     "@use-firebase/auth": "^0.3.4",
+    "animate-css-grid": "^1.4.3",
     "apollo-cache-inmemory": "^1.6.6",
     "apollo-client": "^2.6.10",
     "apollo-link": "^1.2.14",

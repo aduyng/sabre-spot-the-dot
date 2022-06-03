@@ -1,3 +1,5 @@
+const { STATUSES } = require("../../consts");
+
 exports.up = async knex => {
   await knex.schema.createTable("Job", table => {
     table
@@ -31,7 +33,7 @@ exports.up = async knex => {
       .inTable("Job")
       .onDelete("CASCADE")
       .onUpdate("CASCADE");
-    table.enum("status", ["started", "in-progress", "complete", "errored"]);
+    table.enum("status", STATUSES);
     table.bigInteger("startedAt");
     table.bigInteger("completedAt");
     table
@@ -59,7 +61,7 @@ exports.up = async knex => {
     table.bigInteger("size").notNullable();
     table.string("diffUrl", 1000);
     table.integer("diffPercentage").unsigned();
-    table.enum("status", ["created", "processing", "complete"]).defaultTo("created");
+    table.enum("status", STATUSES).defaultTo("STARTED");
     table
       .bigInteger("createdAt")
       .unsigned()

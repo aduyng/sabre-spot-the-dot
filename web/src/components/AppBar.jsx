@@ -162,14 +162,12 @@ export default function AppBar({ onToggleDrawerClick }) {
           >
             <MenuIcon />
           </IconButton>
-          <Link to={`/${companyCode}`}>
             <img
               src="/sabre-logo-red.svg"
               className={classes.logo}
               alt="Logo"
               data-testid="logoImage"
             />
-          </Link>
           <div className={classes.versionNotes}>
             <div className={classes.version}>{config.version}</div>
           </div>
