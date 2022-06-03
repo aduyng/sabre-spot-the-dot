@@ -10,13 +10,12 @@ import FlightTakeoffIcon from "@material-ui/icons/FlightTakeoff";
 import HomeIcon from "@material-ui/icons/Home";
 import PhotoLibraryIcon from "@material-ui/icons/PhotoLibrary";
 import WorkIcon from "@material-ui/icons/Work";
-import { useTheme } from "@material-ui/styles";
 import { get } from "lodash";
 import { useSnackbar } from "notistack";
-import ScreenshotsView from "./ScreenshotsView"
 import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
+import ScreenshotsView from "./ScreenshotsView";
 import Page from "../../components/Page/Page";
 import PageTitle from "../../components/PageTitle";
 import formatDateTime from "../../libs/formatDateTime";
@@ -63,10 +62,9 @@ const useStyles = makeStyles(theme => ({
 export default function JobView() {
   const classes = useStyles();
   const { t } = useTranslation();
-  const theme = useTheme();
   const { enqueueSnackbar } = useSnackbar();
   const { launchId, projectId, jobId } = useParams();
-  const { data, loading, error } = useQuery(GET_LAUNCH, {
+  const { data, error } = useQuery(GET_LAUNCH, {
     variables: { id: launchId }
   });
   const { data: projectData, pError } = useQuery(GET_PROJECT, {
@@ -90,10 +88,25 @@ export default function JobView() {
   if (!data || !projectData || !jobData) return null;
   if (error || pError || jError) {
     enqueueSnackbar(
-      (error && error.message) || (pError && pError.message) || jError & jError.message,
+      (error && error.message) || (pError && pError.message) || (jError && jError.message),
       { variant: "error" }
     );
     return null;
+  }
+
+  let status;
+  if (launch.status === "PROCESSING") {
+    status = <CircularProgress />;
+  } else if (launch.status === "ERROR") {
+    status = "Error";
+  } else {
+    status = (
+      <Typography>
+        {t("Completed At: {{completedAt}}", {
+          completedAt: formatDateTime(launch.completedAt)
+        })}
+      </Typography>
+    );
   }
   return (
     <Page>
@@ -125,7 +138,6 @@ export default function JobView() {
       <div className={classes.root}>
         <Card className={classes.boxContent}>
           <CardHeader
-          
             avatar={
               <Avatar className={classes.avatarHeader}>
                 <PhotoLibraryIcon />
@@ -139,24 +151,14 @@ export default function JobView() {
                 <Typography>
                   {t("Started At: {{startedAt}}", { startedAt: formatDateTime(launch.startedAt) })}
                 </Typography>
-                {launch.status === "PROCESSING" ? (
-                  <CircularProgress />
-                ) : launch.status === "ERROR" ? (
-                  "Error"
-                ) : (
-                  <Typography>
-                    {t("Completed At: {{completedAt}}", {
-                      completedAt: formatDateTime(launch.completedAt)
-                    })}
-                  </Typography>
-                )}
+                {status}
               </>
             }
           />
 
           <CardContent>
-            <ScreenshotsView screenshots={screenshots}/>
-            </CardContent>
+            <ScreenshotsView screenshots={screenshots} />
+          </CardContent>
         </Card>
       </div>
     </Page>

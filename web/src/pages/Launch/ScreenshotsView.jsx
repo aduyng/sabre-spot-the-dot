@@ -1,12 +1,11 @@
 import { Grid } from "@material-ui/core";
-import { makeStyles } from "@material-ui/styles";
-import { useState, useMemo } from "react";
-import React from "react";
-import DiffCard from "../../components/DiffCard/DiffCard";
-import { useRef } from "react";
-import { useEffect } from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import React, { useState, useRef, useEffect } from "react";
 import { wrapGrid } from "animate-css-grid";
 import { last } from "lodash";
+import { arrayOf, string, shape } from "prop-types";
+import DiffCard from "../../components/DiffCard/DiffCard";
+
 const useStyles = makeStyles({
   grid: {
     width: "90vw",
@@ -48,13 +47,12 @@ export default function ScreenshotsView({ screenshots }) {
       {
         ...sc,
         expanded: false,
-        rightButton: prev && prev.expanded ? true : prev && prev.rightButton ? false : true
+        rightButton: prev && prev.expanded ? true : !(prev && prev.rightButton)
       }
     ];
   }, []);
-  console.log("mapping", mapping, expanded);
   return (
-    <Grid container={true} innerRef={grid} spacing={3} className={styles.grid}>
+    <Grid container innerRef={grid} spacing={3} className={styles.grid}>
       {mapping &&
         mapping.map(sc => {
           return <DiffCard screenshot={sc} toggle={toggle(sc.id)} key={sc.id} />;
@@ -62,3 +60,16 @@ export default function ScreenshotsView({ screenshots }) {
     </Grid>
   );
 }
+
+ScreenshotsView.propTypes = {
+  screenshots: arrayOf(
+    shape({
+      id: string.isRequired,
+      name: string.isRequired
+    })
+  )
+};
+
+ScreenshotsView.defaultProps = {
+  screenshots: []
+};

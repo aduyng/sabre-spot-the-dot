@@ -32,7 +32,6 @@ export default function LaunchesList({ launches }) {
   const classes = useStyles();
   const { t } = useTranslation();
   const { url } = useRouteMatch();
-  console.log(launches);
 
   const columns = [
     {
@@ -82,8 +81,7 @@ export default function LaunchesList({ launches }) {
               {map(columns, column => {
                 return (
                   <TableCell key={column.id} align={column.align}>
-                    {column.fn ? column.fn(get(row, column.id)) : get(row, column.id) + "" // to render boolean
-                    }
+                    {column.fn ? column.fn(get(row, column.id)) : `${get(row, column.id)}`}
                   </TableCell>
                 );
               })}
@@ -95,7 +93,7 @@ export default function LaunchesList({ launches }) {
   );
 }
 LaunchesList.propTypes = {
-  jobs: arrayOf(
+  launches: arrayOf(
     shape({
       id: string.isRequired,
       name: string.isRequired
@@ -104,5 +102,5 @@ LaunchesList.propTypes = {
 };
 
 LaunchesList.defaultProps = {
-  jobs: []
+  launches: []
 };

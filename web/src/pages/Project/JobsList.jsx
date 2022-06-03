@@ -31,7 +31,6 @@ export default function JobsList({ jobs }) {
   const classes = useStyles();
   const { t } = useTranslation();
   const { url } = useRouteMatch();
-  console.log(jobs);
 
   const columns = [
     {

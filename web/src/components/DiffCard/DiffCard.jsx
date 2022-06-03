@@ -4,22 +4,17 @@ import {
   Typography,
   Grid,
   IconButton,
-  CardMedia,
   CardContent,
   GridList,
   GridListTile,
-  Collapse,
   Box
 } from "@material-ui/core";
-import { makeStyles } from "@material-ui/styles";
+import makeStyles from "@material-ui/core/styles/makeStyles";
 import PropTypes from "prop-types";
-import { useState } from "react";
-import CircularProgressWithLabel from "./CircularProgressWithLabel";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import React from "react";
-import { useRef } from "react";
-import { useEffect } from "react";
+import CircularProgressWithLabel from "./CircularProgressWithLabel";
 
 const useStyles = makeStyles({
   root: {
@@ -40,7 +35,7 @@ const useStyles = makeStyles({
 });
 
 export default function DiffCard({
-  screenshot: { goldenUrl, diffUrl, url, diffPercentage, expanded, rightButton, name, id },
+  screenshot: { goldenUrl, diffUrl, url, diffPercentage, expanded, rightButton, name },
   toggle
 }) {
   const classes = useStyles();
@@ -82,7 +77,7 @@ export default function DiffCard({
           />
         )}
         <CardContent>
-          <GridList cols={expanded ? 3 : 1} cellHeight={180} className={classes.imagelist} >
+          <GridList cols={expanded ? 3 : 1} cellHeight={180} className={classes.imagelist}>
             <GridListTile>
               <img src={diffUrl} alt="diff" />
             </GridListTile>
@@ -114,5 +109,6 @@ DiffCard.propTypes = {
     status: PropTypes.string.isRequired,
     expanded: PropTypes.bool.isRequired,
     rightButton: PropTypes.bool.isRequired
-  })
+  }).isRequired,
+  toggle: PropTypes.func.isRequired
 };
