@@ -16,6 +16,7 @@ module.exports = ({ functions }) =>
       console.log(`bucket: ${bucket}, name: ${name}, contentType: ${contentType}`);
       if (name.split("/").shift() !== UPLOAD_DIR) {
         console.warn(`the file name doesn't start with "${UPLOAD_DIR}", skip it!`);
+        return false;
       }
 
       return connectDb()

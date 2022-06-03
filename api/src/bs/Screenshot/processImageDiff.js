@@ -62,11 +62,12 @@ module.exports = async ({ knex, bucket, name, contentType }) => {
   await getBucket()
     .file(diffFilePath)
     .save(compareResult.getBuffer());
-  console.log(`diff file has been saved at ${diffFilePath}`);
+  const diffPercentage = Math.round(compareResult.rawMisMatchPercentage * 100);
+  console.log(`diff file has been saved at ${diffFilePath}, diffPercentage: ${diffPercentage}`);
   await knex("Screenshot")
     .update({
       diff: diffFileName,
-      diffPercentage: compareResult.rawMisMatchPercentage,
+      diffPercentage,
       status: SCREENSHOT_STATUS_COMPLETE,
       updatedAt: Date.now()
     })
