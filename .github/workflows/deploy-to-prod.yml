@@ -48,5 +48,5 @@ jobs:
     secrets:
       FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
       GCP_SERVICE_ACCOUNT_KEY: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
-      POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+      POSTGRES_PASSWORD: "${{ secrets.POSTGRES_PASSWORD }}"
 
