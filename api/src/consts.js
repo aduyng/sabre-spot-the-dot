@@ -20,15 +20,16 @@ const UPLOAD_DIR = "uploads";
 const SCREENSHOT_DIR = "screenshots";
 
 const RESEMBLE_OPTIONS = {
-  ignore: "antialiasing",
+  ignore: "nothing",
   output: {
     errorColor: {
       blue: 255,
       green: 0,
       red: 255
     },
-    errorType: "movement",
-    outputDiff: true
+    errorType: "flatDifferenceIntensity",
+    outputDiff: true,
+    transparency: 1
   },
   scaleToSameSize: true
 };

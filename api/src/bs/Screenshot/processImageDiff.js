@@ -29,6 +29,13 @@ module.exports = async ({ knex, bucket, name, contentType }) => {
     .first();
 
   if (launch.isGolden) {
+    await knex("Screenshot")
+      .update({
+        status: SCREENSHOT_STATUS_COMPLETE,
+        updatedAt: Date.now()
+      })
+      .where({ id: screenshot.id });
+
     const destination = `${SCREENSHOT_DIR}/${projectId}/${jobId}/${launchId}/${screenshot.id}/${screenshot.name}`;
     console.log(
       `the launch id: ${launch.id} is the golden launch, moving ${name} to ${destination}`
@@ -49,7 +56,7 @@ module.exports = async ({ knex, bucket, name, contentType }) => {
     getScreenshotContent({
       projectId,
       jobId,
-      launchId,
+      launchId: baseScreenshot.launchId,
       screenshot: baseScreenshot,
       throwError: true
     })
@@ -66,7 +73,7 @@ module.exports = async ({ knex, bucket, name, contentType }) => {
   const fileNameParts = screenshot.name.split(".");
   const extension = fileNameParts.pop();
   const diffFileName = `${fileNameParts.join(".")}.diff.${extension}`;
-  const diffFilePath = `/${projectId}/${jobId}/${launchId}/${screenshot.id}/${diffFileName}`;
+  const diffFilePath = `${SCREENSHOT_DIR}/${projectId}/${jobId}/${launchId}/${screenshot.id}/${diffFileName}`;
   await getBucket()
     .file(diffFilePath)
     .save(compareResult.getBuffer());
