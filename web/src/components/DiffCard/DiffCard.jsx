@@ -32,7 +32,7 @@ const useStyles = makeStyles({
 });
 
 export default function DiffCard({
-  screenshot: { goldenUrl, diffUrl, url, diffPercentage, name }
+  screenshot: { goldenUrl, diffUrl, baseUrl, diffPercentage, name }
 }) {
   const [expanded, setExpanded] = useState(false);
   const classes = useStyles();
@@ -63,10 +63,10 @@ export default function DiffCard({
             {expanded ? (
               <>
                 <GridListTile>
-                  <img src={goldenUrl} alt="base" />
+                  <img src={goldenUrl} alt="golden" />
                 </GridListTile>
                 <GridListTile>
-                  <img src={url} alt="new" />
+                  <img src={baseUrl} alt="base" />
                 </GridListTile>
               </>
             ) : null}
@@ -78,7 +78,7 @@ export default function DiffCard({
 }
 DiffCard.propTypes = {
   screenshot: PropTypes.shape({
-    url: PropTypes.string.isRequired,
+    baseUrl: PropTypes.string.isRequired,
     diffUrl: PropTypes.string.isRequired,
     goldenUrl: PropTypes.string.isRequired,
     diffPercentage: PropTypes.number.isRequired,

@@ -124,6 +124,7 @@ module.exports = gql`
     updatedByUserId: ID!
     updatedAt: BigInt
     status: String!
+    screenshots: [Screenshot]
   }
 
   input ScreenshotInput {
@@ -140,12 +141,10 @@ module.exports = gql`
 
   type Screenshot {
     id: ID!
+    launchId: ID!
     name: String!
-    url: String
-    size: BigInt
-    diffUrl: String
+    diff: String
     diffPercentage: PositiveInt
-    goldenUrl: String
     status: String!
     createdAt: BigInt
     createdByUserId: ID
@@ -163,7 +162,8 @@ module.exports = gql`
     getJob(id: ID!): Job
     getLaunches(jobId: ID!): [Launch]
     getLaunch(id: ID!): Launch
-    getScreenshots(launchId: ID!): [Screenshot]
+    getGoldenLaunch(id: ID!): Launch
+    getScreenshots(id: ID!): [Screenshot]
   }
 
   type Mutation {

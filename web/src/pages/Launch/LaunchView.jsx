@@ -1,5 +1,6 @@
 import { useQuery } from "@apollo/react-hooks";
-import { Link, Typography } from "@material-ui/core";
+import Typography from "@material-ui/core/Typography";
+import Link from "@material-ui/core/Link";
 import Avatar from "@material-ui/core/Avatar";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
@@ -15,13 +16,14 @@ import { useSnackbar } from "notistack";
 import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
+import firebase from "firebase";
 import ScreenshotsView from "./ScreenshotsView";
 import Page from "../../components/Page/Page";
 import PageTitle from "../../components/PageTitle";
 import formatDateTime from "../../libs/formatDateTime";
-import GET_JOB from "../Job/GET_JOB.gql";
-import GET_PROJECT from "../Project/GET_PROJECT.gql";
 import GET_LAUNCH from "./GET_LAUNCH.gql";
+import PageLoader from "../../components/PageLoader";
+import joinLaunches from "./joinLaunches";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -64,49 +66,56 @@ export default function JobView() {
   const { t } = useTranslation();
   const { enqueueSnackbar } = useSnackbar();
   const { launchId, projectId, jobId } = useParams();
-  const { data, error } = useQuery(GET_LAUNCH, {
-    variables: { id: launchId }
-  });
-  const { data: projectData, pError } = useQuery(GET_PROJECT, {
-    variables: { id: projectId }
-  });
-  const { data: jobData, jError } = useQuery(GET_JOB, {
-    variables: { id: jobId }
+  const { data, error, loading } = useQuery(GET_LAUNCH, {
+    variables: { launchId, jobId, projectId }
   });
 
-  const { project } = useMemo(
+  const { thisLaunch, goldenLaunch, projectName, jobName } = useMemo(
     () => ({
-      project: get(projectData, "getProject")
+      thisLaunch: get(data, "getLaunch"),
+      goldenLaunch: get(data, "getGoldenLaunch"),
+      project: get(data, "getProject"),
+      job: get(data, "getJob")
     }),
-    [projectData]
-  );
-  const { launch, screenshots } = useMemo(
-    () => ({ launch: get(data, "getLaunch"), screenshots: get(data, "getScreenshots") }),
     [data]
   );
-  const { job } = useMemo(() => ({ job: get(jobData, "getJob") }), [jobData]);
-  if (!data || !projectData || !jobData) return null;
-  if (error || pError || jError) {
-    enqueueSnackbar(
-      (error && error.message) || (pError && pError.message) || (jError && jError.message),
-      { variant: "error" }
-    );
+
+  const { screenshots } = useMemo(() => {
+    if (!thisLaunch || !goldenLaunch) return {};
+    const scs = joinLaunches({
+      base: get(thisLaunch, "screenshots", []),
+      golden: get(goldenLaunch, "screenshots", [])
+    });
+    const withUrl = scs.map(sc => ({
+      ...sc,
+      baseUrl: sc.name
+        ? firebase
+            .storage()
+            .ref(`${projectId}/${jobId}/${launchId}/${sc.id}/${sc.name}`)
+            .getDownloadURL()
+        : undefined,
+      diffUrl: sc.diff
+        ? firebase
+            .storage()
+            .ref(`${projectId}/${jobId}/${launchId}/${sc.id}/${sc.diff}`)
+            .getDownloadURL()
+        : undefined,
+      goldenUrl: sc.golden
+        ? firebase
+            .storage()
+            .ref(`${projectId}/${jobId}/${sc.goldenLaunchId}/${sc.goldenId}/${sc.golden}`)
+            .getDownloadURL()
+        : undefined
+    }));
+    return { screenshots: withUrl };
+  }, [thisLaunch, goldenLaunch]);
+
+  if (error) {
+    enqueueSnackbar(error && error.message, { variant: "error" });
     return null;
   }
-
-  let status;
-  if (launch.status === "PROCESSING") {
-    status = <CircularProgress />;
-  } else if (launch.status === "ERROR") {
-    status = "Error";
-  } else {
-    status = (
-      <Typography>
-        {t("Completed At: {{completedAt}}", {
-          completedAt: formatDateTime(launch.completedAt)
-        })}
-      </Typography>
-    );
+  if (loading) {
+    return <PageLoader />;
   }
   return (
     <Page>
@@ -119,16 +128,16 @@ export default function JobView() {
           },
           {
             href: `/projects/${projectId}/jobs`,
-            label: project.name,
+            label: projectName,
             Icon: AccountTreeIcon
           },
           {
-            label: job.name,
+            label: jobName,
             href: `/projects/${projectId}/jobs/${jobId}/launches`,
             Icon: WorkIcon
           },
           {
-            label: launch.name,
+            label: thisLaunch.name,
             Icon: FlightTakeoffIcon,
             href: `/projects/${projectId}/jobs/${jobId}/launches/${launchId}/screenshots`
           }
@@ -144,20 +153,22 @@ export default function JobView() {
               </Avatar>
             }
             data-testid="projects-header"
-            title={t("Screenshots for {{launch}}", { launch: launch.name })}
+            title={t("Screenshots for {{launch}}", { launch: thisLaunch.name })}
             action={
               <>
-                <Typography>{t("Status: {{status}}", { status: launch.status })}</Typography>
+                <Typography>{t("Status: {{status}}", { status: thisLaunch.status })}</Typography>
                 <Typography>
-                  {t("Created At: {{createdAt}}", { createdAt: formatDateTime(launch.createdAt) })}
+                  {t("Created At: {{createdAt}}", {
+                    createdAt: formatDateTime(get(thisLaunch, "createdAt"))
+                  })}
                 </Typography>
                 <Typography>
-                  {t("Branch: {{branch}}", { branch: get(launch, "branch") })}
+                  {t("Branch: {{branch}}", { branch: get(thisLaunch, "branch") })}
                 </Typography>
                 <Typography>
-                  {t("Commit: {{commit}}", { commit: get(launch, "commit") })}
+                  {t("Commit: {{commit}}", { commit: get(thisLaunch, "commit") })}
                 </Typography>
-                <Link href={get(launch, "url")}>URL</Link>
+                <Link href={get(thisLaunch, "url")}>URL</Link>
               </>
             }
           />
