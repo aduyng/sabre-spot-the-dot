@@ -28,6 +28,7 @@
     "minimist": "^1.2.6",
     "numeral": "^2.0.6",
     "pg": "^8.3.3",
+    "resemblejs": "^4.1.0",
     "tmp": "^0.2.1",
     "uuid": "^8.3.2",
     "validator": "^13.7.0"
