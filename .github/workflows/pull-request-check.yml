@@ -39,9 +39,6 @@ jobs:
         npm --prefix api i
         npm --prefix web i
         npm --prefix functions i
-        npm --prefix e2e i
-        npm --prefix aig-ftp-sync i
-        npm --prefix chrome-extension i
         npm --prefix ci i
 
     - name: build functions
