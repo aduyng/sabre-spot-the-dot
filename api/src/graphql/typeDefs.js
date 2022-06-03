@@ -105,13 +105,18 @@ module.exports = gql`
     name: String!
   }
 
-
   type Launch {
     id: ID!
     isGolden: Boolean!
     startedAt: BigInt!
     completedAt: BigInt
     status: Status!
+  }
+
+  type Crumbs {
+    jobName: String
+    projectName: String
+  }
 
   input ScreenshotInput {
     projectId: ID!
