@@ -1,4 +1,5 @@
 import { useQuery } from "@apollo/react-hooks";
+// TODO: split the imports
 import { CircularProgress, Typography } from "@material-ui/core";
 import Avatar from "@material-ui/core/Avatar";
 import Card from "@material-ui/core/Card";

@@ -4,7 +4,7 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import MDTableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Checkbox from "@material-ui/core/Checkbox";
-import { TableCell } from "@material-ui/core";
+import TableCell from "@material-ui/core/TableCell";
 import TableHeadCell from "./TableHeadCell";
 import DefaultTableHeadCell from "./DefaultTableHeadCell";
 import SortableTableHeadCell from "./SortableTableHeadCell";

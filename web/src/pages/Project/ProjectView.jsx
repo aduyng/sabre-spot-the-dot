@@ -16,6 +16,7 @@ import Page from "../../components/Page/Page";
 import PageTitle from "../../components/PageTitle";
 import GET_PROJECT from "./GET_PROJECT.gql";
 import JobsList from "./JobsList";
+import PageLoader from "../../components/PageLoader";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -58,16 +59,20 @@ export default function ProjectView() {
   const { t } = useTranslation();
   const { enqueueSnackbar } = useSnackbar();
   const { projectId } = useParams();
-  const { data, error } = useQuery(GET_PROJECT, {
+  const { data, loading, error } = useQuery(GET_PROJECT, {
     variables: { id: projectId }
   });
   const { jobs, project } = useMemo(() => {
     return { jobs: get(data, "getJobs"), project: get(data, "getProject") };
   }, [data]);
-  if (!data) return null;
+
   if (error) {
     enqueueSnackbar(error.message, { variant: "error" });
     return null;
+  }
+
+  if (loading) {
+    return <PageLoader />;
   }
   return (
     <Page>

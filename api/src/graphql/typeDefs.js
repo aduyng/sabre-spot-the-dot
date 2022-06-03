@@ -154,6 +154,7 @@ module.exports = gql`
     getJob(id: ID!): Job
     getLaunches(jobId: ID!): [Launch]
     getLaunch(id: ID!): Launch
+    getGoldenLaunch(jobId: ID!): Launch
     getScreenshots(launchId: ID!): [Screenshot]
     getCrumbs(projectId: ID!, jobId: ID): Crumbs
   }
