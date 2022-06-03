@@ -105,29 +105,38 @@ module.exports = gql`
     name: String!
   }
 
+
   type Launch {
     id: ID!
     isGolden: Boolean!
     startedAt: BigInt!
     completedAt: BigInt
     status: Status!
+
+  input ScreenshotInput {
+    projectId: ID!
+    fileName: String!
+    buildUrl: String
+    buildNumber: PositiveInt
+    buildName: String
+    jobName: String!
+    jobUrl: String
+    commit: String
+    branch: String
   }
 
   type Screenshot {
     id: ID!
     name: String!
-    url: String!
-    size: String!
+    url: String
+    size: BigInt
     diffUrl: String
-    goldenUrl: String
-    diffPercentage: Int
-    status: Status!
-    createdAt: BigInt!
-  }
-
-  type Crumbs {
-    projectName: String!
-    jobName: String
+    diffPercentage: PositiveInt
+    status: String!
+    createdAt: BigInt
+    createdByUserId: ID
+    updatedAt: BigInt
+    updatedByUserId: ID
   }
 
   type Query {
@@ -148,5 +157,6 @@ module.exports = gql`
     ping: Int
     createApiKey(description: String!): ApiKey
     deleteApiKey(id: ID!): Int
+    createScreenshotFromCI(screenshotInput: ScreenshotInput!): String
   }
 `;

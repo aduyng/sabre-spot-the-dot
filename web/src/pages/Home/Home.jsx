@@ -53,7 +53,7 @@ export default function HomePage() {
   const { t } = useTranslation();
   const isXsScreen = useMediaQuery(theme => theme.breakpoints.down("xs"));
 
-  const { loading, error, data, refetch } = useQuery(GET_PROJECTS, {
+  const { loading, error, data } = useQuery(GET_PROJECTS, {
     fetchPolicy: "network-only",
     errorPolicy: "all"
   });

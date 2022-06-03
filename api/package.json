@@ -89,7 +89,7 @@
     ]
   },
   "jest-junit": {
-    "suiteName": "@jupiter/api",
+    "suiteName": "@sabre/api",
     "outputDirectory": "../test-outputs/api",
     "outputName": "junit.xml",
     "uniqueOutputName": "false",

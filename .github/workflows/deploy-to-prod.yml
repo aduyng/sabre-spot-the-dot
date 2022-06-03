@@ -6,7 +6,7 @@ on:
       version:
         required: true
         type: string
-        default: "3.1"
+        default: "1.0"
         description: "the major and minor version"
       runDbMigration:
         required: false
@@ -19,14 +19,14 @@ concurrency:
 
 jobs:
   build:
-    uses: Independent-Agency-Alliance/jupiter/.github/workflows/build-fn.yml@develop
+    uses: aduyng/sabre-spot-the-dot/.github/workflows/build-fn.yml@master
     with:
       VERSION: ${{ github.event.inputs.version }}.${{github.run_number}}
 
   deploy:
     needs:
       - build
-    uses: Independent-Agency-Alliance/jupiter/.github/workflows/deploy-fn.yml@develop
+    uses: aduyng/sabre-spot-the-dot/.github/workflows/deploy-fn.yml@master
     with:
       GCP_REGION: "us-central1"
       LOG_LEVEL: "info"
@@ -37,9 +37,9 @@ jobs:
       FIREBASE_PROJECT_ID: "sabre-spot-the-dot"
       FIREBASE_STORAGE_BUCKET: "sabre-spot-the-dot.appspot.com"
       FIREBASE_MESSAGING_SENDER_ID: "205994041605"
-      POSTGRES_INSTANCE_CONNECTION_NAME: "spot-the-dot:us-central1:spot-the-dot"
-      POSTGRES_DB: "jupiter"
-      POSTGRES_USER: "jupiter"
+      POSTGRES_INSTANCE_CONNECTION_NAME: "sabre-spot-the-dot:us-central1:spot-the-dot"
+      POSTGRES_DB: "spot-the-dot"
+      POSTGRES_USER: "sabre"
       STD_RUNTIME_ENV: "production"
       STD_VERSION: ${{ github.event.inputs.version }}.${{github.run_number}}
       SQL_DEBUG: "true"
@@ -48,5 +48,5 @@ jobs:
     secrets:
       FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
       GCP_SERVICE_ACCOUNT_KEY: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
-      POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+      POSTGRES_PASSWORD: "${{ secrets.POSTGRES_PASSWORD }}"
 
