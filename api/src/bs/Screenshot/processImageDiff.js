@@ -73,7 +73,7 @@ module.exports = async ({ knex, bucket, name, contentType }) => {
   const fileNameParts = screenshot.name.split(".");
   const extension = fileNameParts.pop();
   const diffFileName = `${fileNameParts.join(".")}.diff.${extension}`;
-  const diffFilePath = `/${projectId}/${jobId}/${launchId}/${screenshot.id}/${diffFileName}`;
+  const diffFilePath = `${SCREENSHOT_DIR}/${projectId}/${jobId}/${launchId}/${screenshot.id}/${diffFileName}`;
   await getBucket()
     .file(diffFilePath)
     .save(compareResult.getBuffer());
