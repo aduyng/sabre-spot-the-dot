@@ -1,23 +1,17 @@
 import React, { useMemo } from "react";
 import { useSnackbar } from "notistack";
 import { useQuery } from "@apollo/react-hooks";
-import { Link } from "react-router-dom";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import { useTranslation } from "react-i18next";
 import Card from "@material-ui/core/Card";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
 import CardHeader from "@material-ui/core/CardHeader";
-import AccountTreeIcon from '@material-ui/icons/AccountTree';
+import AccountTreeIcon from "@material-ui/icons/AccountTree";
 import CardContent from "@material-ui/core/CardContent";
 import Avatar from "@material-ui/core/Avatar";
-import AddIcon from "@material-ui/icons/Add";
 import HomeIcon from "@material-ui/icons/Home";
-import VpnKey from "@material-ui/icons/VpnKey";
 import Page from "../../components/Page/Page";
 import ProjectList from "./ProjectList";
 import PageTitle from "../../components/PageTitle";
-import SuccessButton from "../../components/SuccessButton";
-
 import GET_PROJECTS from "./GET_PROJECTS.gql";
 import getFirstKeyValue from "../../libs/getFirstKeyValue";
 
@@ -51,7 +45,6 @@ export default function HomePage() {
   const { enqueueSnackbar } = useSnackbar();
   const classes = useStyles();
   const { t } = useTranslation();
-  const isXsScreen = useMediaQuery(theme => theme.breakpoints.down("xs"));
 
   const { loading, error, data } = useQuery(GET_PROJECTS, {
     fetchPolicy: "network-only",

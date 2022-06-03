@@ -103,15 +103,28 @@ module.exports = gql`
   type Job {
     id: ID!
     name: String!
+    url: String!
+    status: String!
+    createdAt: BigInt!
+    createdByUserId: ID!
+    updatedAt: BigInt!
+    updatedByUserId: ID!
   }
-
 
   type Launch {
     id: ID!
+    name: String!
+    url: String!
+    number: ID!
+    commit: String
+    branch: String
     isGolden: Boolean!
-    startedAt: BigInt!
-    completedAt: BigInt
-    status: Status!
+    createdAt: BigInt!
+    createdByUserId: ID!
+    updatedByUserId: ID!
+    updatedAt: BigInt
+    status: String!
+  }
 
   input ScreenshotInput {
     projectId: ID!
@@ -132,6 +145,7 @@ module.exports = gql`
     size: BigInt
     diffUrl: String
     diffPercentage: PositiveInt
+    goldenUrl: String
     status: String!
     createdAt: BigInt
     createdByUserId: ID
@@ -150,7 +164,6 @@ module.exports = gql`
     getLaunches(jobId: ID!): [Launch]
     getLaunch(id: ID!): Launch
     getScreenshots(launchId: ID!): [Screenshot]
-    getCrumbs(projectId: ID!, jobId: ID): Crumbs
   }
 
   type Mutation {

@@ -8,6 +8,7 @@
   "rules": {
     "react/jsx-props-no-spreading": 0,
     "react/jsx-wrap-multilines": 0,
-    "no-console": "error"
+    "no-console": "error",
+    "no-nested-ternary": "off"
   }
 }

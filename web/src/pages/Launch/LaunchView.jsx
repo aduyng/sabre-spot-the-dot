@@ -1,5 +1,5 @@
 import { useQuery } from "@apollo/react-hooks";
-import { CircularProgress, Typography } from "@material-ui/core";
+import { Link, Typography } from "@material-ui/core";
 import Avatar from "@material-ui/core/Avatar";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
@@ -10,13 +10,12 @@ import FlightTakeoffIcon from "@material-ui/icons/FlightTakeoff";
 import HomeIcon from "@material-ui/icons/Home";
 import PhotoLibraryIcon from "@material-ui/icons/PhotoLibrary";
 import WorkIcon from "@material-ui/icons/Work";
-import { useTheme } from "@material-ui/styles";
 import { get } from "lodash";
 import { useSnackbar } from "notistack";
-import ScreenshotsView from "./ScreenshotsView"
 import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
+import ScreenshotsView from "./ScreenshotsView";
 import Page from "../../components/Page/Page";
 import PageTitle from "../../components/PageTitle";
 import formatDateTime from "../../libs/formatDateTime";
@@ -63,10 +62,9 @@ const useStyles = makeStyles(theme => ({
 export default function JobView() {
   const classes = useStyles();
   const { t } = useTranslation();
-  const theme = useTheme();
   const { enqueueSnackbar } = useSnackbar();
   const { launchId, projectId, jobId } = useParams();
-  const { data, loading, error } = useQuery(GET_LAUNCH, {
+  const { data, error } = useQuery(GET_LAUNCH, {
     variables: { id: launchId }
   });
   const { data: projectData, pError } = useQuery(GET_PROJECT, {
@@ -90,7 +88,7 @@ export default function JobView() {
   if (!data || !projectData || !jobData) return null;
   if (error || pError || jError) {
     enqueueSnackbar(
-      (error && error.message) || (pError && pError.message) || jError & jError.message,
+      (error && error.message) || (pError && pError.message) || (jError && jError.message),
       { variant: "error" }
     );
     return null;
@@ -115,7 +113,7 @@ export default function JobView() {
             Icon: WorkIcon
           },
           {
-            label: launch.id,
+            label: launch.name,
             Icon: FlightTakeoffIcon,
             href: `/projects/${projectId}/jobs/${jobId}/launches/${launchId}/screenshots`
           }
@@ -125,38 +123,33 @@ export default function JobView() {
       <div className={classes.root}>
         <Card className={classes.boxContent}>
           <CardHeader
-          
             avatar={
               <Avatar className={classes.avatarHeader}>
                 <PhotoLibraryIcon />
               </Avatar>
             }
             data-testid="projects-header"
-            title={t("Screenshots for Launch #{{launch}}", { launch: launch.id })}
+            title={t("Screenshots for {{launch}}", { launch: launch.name })}
             action={
               <>
                 <Typography>{t("Status: {{status}}", { status: launch.status })}</Typography>
                 <Typography>
-                  {t("Started At: {{startedAt}}", { startedAt: formatDateTime(launch.startedAt) })}
+                  {t("Created At: {{createdAt}}", { createdAt: formatDateTime(launch.createdAt) })}
                 </Typography>
-                {launch.status === "PROCESSING" ? (
-                  <CircularProgress />
-                ) : launch.status === "ERROR" ? (
-                  "Error"
-                ) : (
-                  <Typography>
-                    {t("Completed At: {{completedAt}}", {
-                      completedAt: formatDateTime(launch.completedAt)
-                    })}
-                  </Typography>
-                )}
+                <Typography>
+                  {t("Branch: {{branch}}", { branch: get(launch, "branch") })}
+                </Typography>
+                <Typography>
+                  {t("Commit: {{commit}}", { commit: get(launch, "commit") })}
+                </Typography>
+                <Link href={get(launch, "url")}>URL</Link>
               </>
             }
           />
 
           <CardContent>
-            <ScreenshotsView screenshots={screenshots}/>
-            </CardContent>
+            <ScreenshotsView screenshots={screenshots} />
+          </CardContent>
         </Card>
       </div>
     </Page>

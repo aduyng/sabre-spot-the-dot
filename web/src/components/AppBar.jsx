@@ -1,7 +1,6 @@
 import React from "react";
 import { func } from "prop-types";
 import makeStyles from "@material-ui/core/styles/makeStyles";
-import { useParams, Link } from "react-router-dom";
 import MUIAppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
@@ -84,7 +83,6 @@ const useStyles = makeStyles(theme => ({
 export default function AppBar({ onToggleDrawerClick }) {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const { companyCode } = useParams();
   const session = useSession();
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const config = useConfig();
@@ -162,12 +160,12 @@ export default function AppBar({ onToggleDrawerClick }) {
           >
             <MenuIcon />
           </IconButton>
-            <img
-              src="/sabre-logo-red.svg"
-              className={classes.logo}
-              alt="Logo"
-              data-testid="logoImage"
-            />
+          <img
+            src="/sabre-logo-red.svg"
+            className={classes.logo}
+            alt="Logo"
+            data-testid="logoImage"
+          />
           <div className={classes.versionNotes}>
             <div className={classes.version}>{config.version}</div>
           </div>

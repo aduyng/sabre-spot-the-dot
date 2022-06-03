@@ -1,25 +1,17 @@
-import {
-  Card,
-  CardHeader,
-  Typography,
-  Grid,
-  IconButton,
-  CardMedia,
-  CardContent,
-  GridList,
-  GridListTile,
-  Collapse,
-  Box
-} from "@material-ui/core";
-import { makeStyles } from "@material-ui/styles";
+import React, { useState } from "react";
+import Card from "@material-ui/core/Card";
+import CardHeader from "@material-ui/core/CardHeader";
+import Typography from "@material-ui/core/Typography";
+import Grid from "@material-ui/core/Grid";
+import IconButton from "@material-ui/core/IconButton";
+import CardContent from "@material-ui/core/CardContent";
+import GridList from "@material-ui/core/GridList";
+import GridListTile from "@material-ui/core/GridListTile";
+import Box from "@material-ui/core/Box";
+import makeStyles from "@material-ui/core/styles/makeStyles";
 import PropTypes from "prop-types";
-import { useState } from "react";
-import CircularProgressWithLabel from "./CircularProgressWithLabel";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
-import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import React from "react";
-import { useRef } from "react";
-import { useEffect } from "react";
+import CircularProgressWithLabel from "./CircularProgressWithLabel";
 
 const useStyles = makeStyles({
   root: {
@@ -40,11 +32,11 @@ const useStyles = makeStyles({
 });
 
 export default function DiffCard({
-  screenshot: { goldenUrl, diffUrl, url, diffPercentage, expanded, rightButton, name, id },
-  toggle
+  screenshot: { goldenUrl, diffUrl, url, diffPercentage, name }
 }) {
+  const [expanded, setExpanded] = useState(false);
   const classes = useStyles();
-  const handleExpand = () => toggle();
+  const handleExpand = () => setExpanded(val => !val);
   const RightButtonCardHeader = () => (
     <CardHeader
       avatar={<CircularProgressWithLabel value={diffPercentage} />}
@@ -62,27 +54,9 @@ export default function DiffCard({
   return (
     <Grid item xs={expanded ? 12 : 6}>
       <Card className={classes.root}>
-        {rightButton ? (
-          <RightButtonCardHeader />
-        ) : (
-          <CardHeader
-            action={
-              <Box paddingTop={1}>
-                <CircularProgressWithLabel value={diffPercentage} />
-              </Box>
-            }
-            avatar={
-              <Box display="flex" alignItems="center" justifyContent="center">
-                <IconButton onClick={handleExpand}>
-                  <ChevronLeftIcon className={expanded ? classes.backwards : null} />
-                </IconButton>
-                <Typography>{name}</Typography>
-              </Box>
-            }
-          />
-        )}
+        <RightButtonCardHeader />
         <CardContent>
-          <GridList cols={expanded ? 3 : 1} cellHeight={180} className={classes.imagelist} >
+          <GridList cols={expanded ? 3 : 1} cellHeight={180} className={classes.imagelist}>
             <GridListTile>
               <img src={diffUrl} alt="diff" />
             </GridListTile>
@@ -114,5 +88,5 @@ DiffCard.propTypes = {
     status: PropTypes.string.isRequired,
     expanded: PropTypes.bool.isRequired,
     rightButton: PropTypes.bool.isRequired
-  })
+  }).isRequired
 };
