@@ -1,7 +1,8 @@
 // const Promise = require("bluebird");
 // const path = require("path");
 // const compareImages = require("resemblejs/compareImages");
-const { RESEMBLE_OPTIONS, UPLOAD_DIR, SCREENSHOT_DIR } = require("../../consts");
+// const { RESEMBLE_OPTIONS, UPLOAD_DIR, SCREENSHOT_DIR } = require("../../consts");
+const { SCREENSHOT_DIR } = require("../../consts");
 const getBucket = require("../../firebase/getBucket");
 const getScreenshot = require("./processImageDiff/getScreenshot");
 // const getBaseScreenshot = require("./processImageDiff/getBaseScreenshot");
@@ -40,4 +41,5 @@ module.exports = async ({ knex, bucket, name, contentType }) => {
   //   .file(diffFilePath)
   //   .save(compareResult.getBuffer());
   // console.log(`diff file has been saved at ${diffFilePath}`);
+  return true;
 };
