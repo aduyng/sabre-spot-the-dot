@@ -33,7 +33,7 @@ module.exports = async ({ knex, bucket, name, contentType }) => {
     );
     return gcsBucket.file(name).move(destination);
   }
-  const baseScreenshot = getBaseScreenshot({ knex, screenshot });
+  const baseScreenshot = await getBaseScreenshot({ knex, screenshot });
   if (!baseScreenshot) {
     console.log(`the base screenshot of ${screenshot.id} is not found, this is a new screenshot`);
     return false;
