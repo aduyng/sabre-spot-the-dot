@@ -6,14 +6,12 @@ import get from "lodash/get";
 import Table from "@material-ui/core/Table";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
-import DeleteIcon from "@material-ui/icons/Delete";
 import Button from "@material-ui/core/Button";
 import PageviewIcon from "@material-ui/icons/Pageview";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import TableHead from "../../components/TableListingPage/TableHead";
 import TableBody from "../../components/TableListingPage/TableBody";
-import ConfirmButton from "../../components/ConfirmButton";
 
 const useStyles = makeStyles(theme => ({
   table: {},
