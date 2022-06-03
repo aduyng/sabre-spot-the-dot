@@ -2,7 +2,7 @@ import { Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import React, { useState, useRef, useEffect } from "react";
 import { wrapGrid } from "animate-css-grid";
-import { last } from "lodash";
+import last from "lodash/last";
 import { arrayOf, string, shape } from "prop-types";
 import DiffCard from "../../components/DiffCard/DiffCard";
 
