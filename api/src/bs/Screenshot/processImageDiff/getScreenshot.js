@@ -1,8 +1,4 @@
-const path = require("path");
-
-module.exports = async ({ knex, name }) => {
-  const fileNameWithoutFolder = path.basename(name);
-  const screenshotId = fileNameWithoutFolder.split("-").shift();
+module.exports = async ({ knex, screenshotId }) => {
   console.log(`screenshotId: ${screenshotId}`);
   const screenshot = await knex("Screenshot")
     .where({

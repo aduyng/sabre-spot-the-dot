@@ -44,7 +44,7 @@ module.exports = async ({
 
     const screenshot = await createScreenshot({ trx, fileName, launch, creator });
 
-    const filePath = `${UPLOAD_DIR}/${screenshot.id}-${fileName}`;
+    const filePath = `${UPLOAD_DIR}/${project.id}/${job.id}/${launch.id}/${screenshot.id}/${fileName}`;
     return getScreenshotUploadUrl({ filePath });
   });
 };
