@@ -23,6 +23,7 @@ function getFirebaseConfig() {
       ...runtimeConfig,
       apiKey: config.fbase.api_key,
       authDomain: `${runtimeConfig.projectId}.firebaseapp.com`,
+      storageBucket: config.fbase.storage_bucket,
       messagingSenderId: config.fbase.message_sender_id,
       appId: config.fbase.app_id,
       measurementId: config.fbase.measurement_id,

@@ -1,6 +1,4 @@
-const { Storage } = require("@google-cloud/storage");
-
-const storage = new Storage();
+const getBucket = require("../../../firebase/getBucket");
 
 module.exports = async function getScreenshotUploadUrl({ filePath }) {
   const options = {
@@ -10,9 +8,8 @@ module.exports = async function getScreenshotUploadUrl({ filePath }) {
     contentType: "application/octet-stream"
   };
 
-  const [url] = await storage
-    .bucket(process.env.FIREBASE_STORAGE_BUCKET)
-    .file(filePath)
-    .getSignedUrl(options);
+  const bucket = getBucket();
+
+  const [url] = await bucket.file(filePath).getSignedUrl(options);
   return url;
 };
