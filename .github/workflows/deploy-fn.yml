@@ -128,12 +128,12 @@ jobs:
             fbase.message_sender_id="${{ inputs.FIREBASE_MESSAGING_SENDER_ID }}"
             fbase.app_id="${{ inputs.FIREBASE_APP_ID }}"
             fbase.project_id="${{ inputs.FIREBASE_PROJECT_ID }}"
-            jupiter.runtime_env="${{ inputs.STD_RUNTIME_ENV }}"
-            jupiter.version="${{ inputs.STD_VERSION }}"
-            jupiter.build_number=$(echo "${{ inputs.GITHUB_SHA }}" | cut -c 1-8)
+            std.runtime_env="${{ inputs.STD_RUNTIME_ENV }}"
+            std.version="${{ inputs.STD_VERSION }}"
+            std.build_number=$(echo "${{ inputs.GITHUB_SHA }}" | cut -c 1-8)
             graphql.debug="true"
             sql.debug="${{ inputs.SQL_DEBUG }}"
-            jupiter.frontend_base_url="${{ inputs.STD_FRONTEND_BASE_URL }}"
+            std.frontend_base_url="${{ inputs.STD_FRONTEND_BASE_URL }}"
             postgres.db="${{ inputs.POSTGRES_DB }}"
             postgres.user="${{ inputs.POSTGRES_USER }}"
             postgres.password="${{ secrets.POSTGRES_PASSWORD }}"
