@@ -29,6 +29,13 @@ module.exports = async ({ knex, bucket, name, contentType }) => {
     .first();
 
   if (launch.isGolden) {
+    await knex("Screenshot")
+      .update({
+        status: SCREENSHOT_STATUS_COMPLETE,
+        updatedAt: Date.now()
+      })
+      .where({ id: screenshot.id });
+
     const destination = `${SCREENSHOT_DIR}/${projectId}/${jobId}/${launchId}/${screenshot.id}/${screenshot.name}`;
     console.log(
       `the launch id: ${launch.id} is the golden launch, moving ${name} to ${destination}`
