@@ -56,6 +56,13 @@ module.exports = gql`
   scalar Void
   scalar DID
 
+  enum Status {
+    STARTING
+    PROCESSING
+    COMPLETE
+    ERROR
+  }
+
   type Config {
     isDevelopment: Boolean!
     version: String!
@@ -98,6 +105,14 @@ module.exports = gql`
     name: String!
   }
 
+
+  type Launch {
+    id: ID!
+    isGolden: Boolean!
+    startedAt: BigInt!
+    completedAt: BigInt
+    status: Status!
+
   input ScreenshotInput {
     projectId: ID!
     fileName: String!
@@ -131,6 +146,11 @@ module.exports = gql`
     getProjects: [Project]
     getProject(id: ID!): Project
     getJobs(projectId: ID!): [Job]
+    getJob(id: ID!): Job
+    getLaunches(jobId: ID!): [Launch]
+    getLaunch(id: ID!): Launch
+    getScreenshots(launchId: ID!): [Screenshot]
+    getCrumbs(projectId: ID!, jobId: ID): Crumbs
   }
 
   type Mutation {

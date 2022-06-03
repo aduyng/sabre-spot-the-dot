@@ -1,17 +1,19 @@
-import React from "react";
-import { arrayOf, shape, string } from "prop-types";
+import Button from "@material-ui/core/Button";
 import makeStyles from "@material-ui/core/styles/makeStyles";
-import map from "lodash/map";
-import get from "lodash/get";
 import Table from "@material-ui/core/Table";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import Button from "@material-ui/core/Button";
 import PageviewIcon from "@material-ui/icons/Pageview";
+import get from "lodash/get";
+import map from "lodash/map";
+import { arrayOf, shape, string } from "prop-types";
+import React from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
-import TableHead from "../../components/TableListingPage/TableHead";
 import TableBody from "../../components/TableListingPage/TableBody";
+import TableHead from "../../components/TableListingPage/TableHead";
+
 
 const useStyles = makeStyles(theme => ({
   table: {},
@@ -57,7 +59,7 @@ export default function ProjectList({ projects }) {
                   variant="outlined"
                   startIcon={<PageviewIcon />}
                   component={Link}
-                  to={`/projects/${row.id}`}
+                  to={`/projects/${row.id}/jobs`}
                 >
                   {t("View")}
                 </Button>

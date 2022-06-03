@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import Card from "@material-ui/core/Card";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import CardHeader from "@material-ui/core/CardHeader";
+import AccountTreeIcon from '@material-ui/icons/AccountTree';
 import CardContent from "@material-ui/core/CardContent";
 import Avatar from "@material-ui/core/Avatar";
 import AddIcon from "@material-ui/icons/Add";
@@ -58,7 +59,6 @@ export default function HomePage() {
   });
 
   const { projects } = useMemo(() => ({ projects: getFirstKeyValue(data) }), [data]);
-
   if (error) {
     enqueueSnackbar(error.message, { variant: "error" });
     return null;
@@ -80,21 +80,10 @@ export default function HomePage() {
           <CardHeader
             avatar={
               <Avatar className={classes.avatarHeader}>
-                <VpnKey />
+                <AccountTreeIcon />
               </Avatar>
             }
-            action={
-              <SuccessButton
-                variant="outlined"
-                component={Link}
-                to="/api-keys/new"
-                data-testid="addNewApiKey"
-              >
-                <AddIcon />
-                {!isXsScreen && t("Add API Key")}
-              </SuccessButton>
-            }
-            title={t("API Keys")}
+            title={t("Projects")}
           />
           <CardContent className={classes.cardContent}>
             <ProjectList projects={projects} />
