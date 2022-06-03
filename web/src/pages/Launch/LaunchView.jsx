@@ -93,6 +93,21 @@ export default function JobView() {
     );
     return null;
   }
+
+  let status;
+  if (launch.status === "PROCESSING") {
+    status = <CircularProgress />;
+  } else if (launch.status === "ERROR") {
+    status = "Error";
+  } else {
+    status = (
+      <Typography>
+        {t("Completed At: {{completedAt}}", {
+          completedAt: formatDateTime(launch.completedAt)
+        })}
+      </Typography>
+    );
+  }
   return (
     <Page>
       <PageTitle

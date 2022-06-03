@@ -1,5 +1,5 @@
 const { connectDb } = require("../../knex/knex");
-const { ROLE_ID_EDITOR, ROLE_ID_OWNER } = require("../../consts");
+const { ROLE_ID_EDITOR, ROLE_ID_OWNER, UPLOAD_DIR } = require("../../consts");
 const transactionallyExecute = require("../../knex/utils/transactionallyExecute");
 const ensureJob = require("./createScreenshotFromCI/ensureJob");
 const ensureLaunch = require("./createScreenshotFromCI/ensureLaunch");
@@ -44,7 +44,7 @@ module.exports = async ({
 
     const screenshot = await createScreenshot({ trx, fileName, launch, creator });
 
-    const filePath = `uploads/${screenshot.id}-${fileName}`;
+    const filePath = `${UPLOAD_DIR}/${screenshot.id}-${fileName}`;
     return getScreenshotUploadUrl({ filePath });
   });
 };

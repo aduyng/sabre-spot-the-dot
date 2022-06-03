@@ -7,7 +7,6 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import AccountTreeIcon from "@material-ui/icons/AccountTree";
 import HomeIcon from "@material-ui/icons/Home";
 import WorkIcon from "@material-ui/icons/Work";
-import VpnKey from "@material-ui/icons/VpnKey";
 import { get } from "lodash";
 import { useSnackbar } from "notistack";
 import React, { useMemo } from "react";
@@ -15,7 +14,6 @@ import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import Page from "../../components/Page/Page";
 import PageTitle from "../../components/PageTitle";
-import getFirstKeyValue from "../../libs/getFirstKeyValue";
 import GET_PROJECT from "./GET_PROJECT.gql";
 import JobsList from "./JobsList";
 
@@ -60,7 +58,7 @@ export default function ProjectView() {
   const { t } = useTranslation();
   const { enqueueSnackbar } = useSnackbar();
   const { projectId } = useParams();
-  const { data, loading, error } = useQuery(GET_PROJECT, {
+  const { data, error } = useQuery(GET_PROJECT, {
     variables: { id: projectId }
   });
   const { jobs, project } = useMemo(() => {

@@ -16,6 +16,23 @@ const SCREENSHOT_STATUS_CREATED = "created";
 const SCREENSHOT_STATUS_PROCESSING = "processing";
 const SCREENSHOT_STATUS_COMPLETE = "complete";
 
+const UPLOAD_DIR = "uploads";
+const SCREENSHOT_DIR = "screenshots";
+
+const RESEMBLE_OPTIONS = {
+  ignore: "antialiasing",
+  output: {
+    errorColor: {
+      blue: 255,
+      green: 0,
+      red: 255
+    },
+    errorType: "movement",
+    outputDiff: true
+  },
+  scaleToSameSize: true
+};
+
 module.exports = {
   FIREBASE_DOWNLOAD_URL: `https://firebasestorage.googleapis.com/v0/b/${process.env.FIREBASE_STORAGE_BUCKET}/o/`,
   FIREBASE_STORAGE_TEMPORARY_FOLDER: "tmp/",
@@ -33,5 +50,8 @@ module.exports = {
   LAUNCH_STATUS_TERMINATED,
   SCREENSHOT_STATUS_CREATED,
   SCREENSHOT_STATUS_PROCESSING,
-  SCREENSHOT_STATUS_COMPLETE
+  SCREENSHOT_STATUS_COMPLETE,
+  UPLOAD_DIR,
+  RESEMBLE_OPTIONS,
+  SCREENSHOT_DIR
 };

@@ -9,11 +9,11 @@ import FlightTakeoffIcon from "@material-ui/icons/FlightTakeoff";
 import HomeIcon from "@material-ui/icons/Home";
 import WorkIcon from "@material-ui/icons/Work";
 import { get } from "lodash";
-import GET_PROJECT from "../Project/GET_PROJECT.gql";
 import { useSnackbar } from "notistack";
 import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
+import GET_PROJECT from "../Project/GET_PROJECT.gql";
 import Page from "../../components/Page/Page";
 import PageTitle from "../../components/PageTitle";
 import GET_JOB from "./GET_JOB.gql";
@@ -60,7 +60,7 @@ export default function JobView() {
   const { t } = useTranslation();
   const { enqueueSnackbar } = useSnackbar();
   const { jobId, projectId } = useParams();
-  const { data, loading, error } = useQuery(GET_JOB, {
+  const { data, error } = useQuery(GET_JOB, {
     variables: { id: jobId }
   });
   const { data: projectData, error: pError } = useQuery(GET_PROJECT, {
@@ -70,12 +70,15 @@ export default function JobView() {
     () => ({ launches: get(data, "getLaunches"), job: get(data, "getJob") }),
     [data]
   );
-  const { project } = useMemo(() => ({
-    project: get(projectData, "getProject")
-  }));
+  const { project } = useMemo(
+    () => ({
+      project: get(projectData, "getProject")
+    }),
+    [projectData]
+  );
   if (!data || !projectData) return null;
   if (error) {
-    enqueueSnackbar((error && error.message) || pError & pError.message, { variant: "error" });
+    enqueueSnackbar((error && error.message) || (pError && pError.message), { variant: "error" });
     return null;
   }
   return (
