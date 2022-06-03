@@ -56,7 +56,7 @@ module.exports = async ({ knex, bucket, name, contentType }) => {
     getScreenshotContent({
       projectId,
       jobId,
-      launchId,
+      launchId: baseScreenshot.launchId,
       screenshot: baseScreenshot,
       throwError: true
     })
