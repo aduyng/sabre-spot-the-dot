@@ -125,9 +125,12 @@ jobs:
             --project "${{ inputs.FIREBASE_PROJECT_ID }}"
             functions:config:set
             fbase.api_key="${{ inputs.FIREBASE_API_KEY }}"
+            fbase.auth_domain="${{ inputs.FIREBASE_AUTH_DOMAIN }}"
+            fbase.database_url="${{ inputs.FIREBASE_DATABASE_URL }}"
             fbase.message_sender_id="${{ inputs.FIREBASE_MESSAGING_SENDER_ID }}"
             fbase.app_id="${{ inputs.FIREBASE_APP_ID }}"
             fbase.project_id="${{ inputs.FIREBASE_PROJECT_ID }}"
+            fbase.storage_bucket="${{ inputs.FIREBASE_STORAGE_BUCKET }}"
             std.runtime_env="${{ inputs.STD_RUNTIME_ENV }}"
             std.version="${{ inputs.STD_VERSION }}"
             std.build_number=$(echo "${{ inputs.GITHUB_SHA }}" | cut -c 1-8)
