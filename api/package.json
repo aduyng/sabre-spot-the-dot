@@ -7,6 +7,7 @@
   "dependencies": {
     "@google-cloud/pubsub": "^2.6.0",
     "@google-cloud/storage": "^5.4.0",
+    "@types/knex": "^0.16.1",
     "apollo-server-cloud-functions": "^2.18.1",
     "axios": "^0.21.2",
     "big-integer": "^1.6.48",
@@ -49,11 +50,13 @@
     "start": "env-cmd --environments development --rc-file ./.env-cmdrc.js nodemon src/dev",
     "start:debug": "env-cmd  --environments development --rc-file ./.env-cmdrc.js node --inspect=0.0.0.0:4001 src/dev",
     "knex": "env-cmd --environments development --rc-file ./.env-cmdrc.js knex --knexfile=./src/knex/config.js",
-    "migrate:up": "env-cmd --environments development --rc-file ./.env-cmdrc.js npm run knex -- migrate:up",
-    "migrate:down": "env-cmd --environments development --rc-file ./.env-cmdrc.js npm run knex -- migrate:down",
-    "migrate:rollback": "env-cmd --environments development --rc-file ./.env-cmdrc.js npm run knex -- migrate:rollback",
-    "migrate:make": "env-cmd --environments development --rc-file ./.env-cmdrc.js npm run knex -- migrate:make",
-    "migrate:latest": "env-cmd --environments development --rc-file ./.env-cmdrc.js npm run knex -- migrate:latest",
+    "knex:seed": "env-cmd --environments development --rc-file ./.env-cmdrc.js npm run knex seed:run",
+    "migrate:up": "env-cmd --environments development --rc-file ./.env-cmdrc.js npm run knex migrate:up",
+    "migrate:down": "env-cmd --environments development --rc-file ./.env-cmdrc.js npm run knex migrate:down",
+    "migrate:rollback": "env-cmd --environments development --rc-file ./.env-cmdrc.js npm run knex migrate:rollback",
+    "migrate:rball": "env-cmd --environments development --rc-file ./.env-cmdrc.js npm run knex migrate:rollback --all",
+    "migrate:make": "env-cmd --environments development --rc-file ./.env-cmdrc.js npm run knex migrate:make",
+    "migrate:latest": "env-cmd --environments development --rc-file ./.env-cmdrc.js npm run knex migrate:latest",
     "cli": "node src/cli/init.js"
   },
   "jest": {
