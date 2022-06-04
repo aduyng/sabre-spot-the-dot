@@ -9,6 +9,7 @@ import AccountTreeIcon from "@material-ui/icons/AccountTree";
 import CardContent from "@material-ui/core/CardContent";
 import Avatar from "@material-ui/core/Avatar";
 import HomeIcon from "@material-ui/icons/Home";
+import Typography from "@material-ui/core/Typography";
 import Page from "../../components/Page/Page";
 import ProjectList from "./ProjectList";
 import PageTitle from "../../components/PageTitle";
@@ -76,7 +77,8 @@ export default function HomePage() {
                 <AccountTreeIcon />
               </Avatar>
             }
-            title={t("Projects")}
+            title={<Typography variant="h3">{t("Projects")}</Typography>}
+            disableTypography
           />
           <CardContent className={classes.cardContent}>
             <ProjectList projects={projects} />

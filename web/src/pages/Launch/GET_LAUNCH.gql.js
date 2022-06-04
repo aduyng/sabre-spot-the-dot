@@ -39,9 +39,11 @@ export default gql`
       }
     }
     getJob(id: $jobId) {
+      id
       name
     }
     getProject(id: $projectId) {
+      id
       name
     }
   }

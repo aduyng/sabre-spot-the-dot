@@ -13,8 +13,8 @@ import last from "lodash/last";
 import isEmpty from "lodash/isEmpty";
 import CloseIcon from "@material-ui/icons/Close";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
+import Icon from "@material-ui/core/Icon";
 import Breadcrumbs from "./Breadcrumbs/Breadcrumbs";
-import { Icon } from "@material-ui/core";
 
 const useStyles = makeStyles(theme => ({
   root: {

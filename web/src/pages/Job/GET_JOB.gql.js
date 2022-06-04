@@ -1,7 +1,7 @@
 import gql from "graphql-tag";
 
 export default gql`
-  query getJob($id: ID!) {
+  query getJob($id: ID!, $projectId: ID!) {
     getJob(id: $id) {
       name
       id
@@ -23,6 +23,10 @@ export default gql`
       updatedAt
       updatedByUserId
       isGolden
+    }
+    getProject(id: $projectId) {
+      id
+      name
     }
   }
 `;

@@ -108,7 +108,7 @@ export default function JobView() {
         : undefined
     }));
     return { screenshots: withUrl };
-  }, [thisLaunch, goldenLaunch]);
+  }, [thisLaunch, goldenLaunch, projectId, launchId, jobId]);
 
   if (error) {
     enqueueSnackbar(error && error.message, { variant: "error" });
@@ -153,7 +153,12 @@ export default function JobView() {
               </Avatar>
             }
             data-testid="projects-header"
-            title={t("Screenshots for {{launch}}", { launch: thisLaunch.name })}
+            disableTypography
+            title={
+              <Typography variant="h3">
+                {t("Screenshots for {{launch}}", { launch: thisLaunch.name })}
+              </Typography>
+            }
             action={
               <>
                 <Typography>{t("Status: {{status}}", { status: thisLaunch.status })}</Typography>
