@@ -1,3 +1,4 @@
+import Promise from "bluebird";
 import { useQuery } from "@apollo/react-hooks";
 import Typography from "@material-ui/core/Typography";
 import Link from "@material-ui/core/Link";
@@ -11,13 +12,14 @@ import FlightTakeoffIcon from "@material-ui/icons/FlightTakeoff";
 import HomeIcon from "@material-ui/icons/Home";
 import PhotoLibraryIcon from "@material-ui/icons/PhotoLibrary";
 import WorkIcon from "@material-ui/icons/Work";
-import { get } from "lodash";
 import { useSnackbar } from "notistack";
-import React, { useMemo } from "react";
+import React, { useMemo, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
-import firebase from "firebase";
+import isEmpty from "lodash/isEmpty";
+import get from "lodash/get";
 import ScreenshotsView from "./ScreenshotsView";
+import initializeFirebase from "../../firebase/initialize";
 import Page from "../../components/Page/Page";
 import PageTitle from "../../components/PageTitle";
 import formatDateTime from "../../libs/formatDateTime";
@@ -65,58 +67,77 @@ export default function JobView() {
   const classes = useStyles();
   const { t } = useTranslation();
   const { enqueueSnackbar } = useSnackbar();
+  const firebase = initializeFirebase();
   const { launchId, projectId, jobId } = useParams();
+  const [screenshots, setScreenshots] = useState();
   const { data, error, loading } = useQuery(GET_LAUNCH, {
     variables: { launchId, jobId, projectId }
   });
 
-  const { thisLaunch, goldenLaunch, projectName, jobName } = useMemo(
-    () => ({
+  const { thisLaunch, goldenLaunch, project, job } = useMemo(() => {
+    if (!data) {
+      return {};
+    }
+
+    return {
       thisLaunch: get(data, "getLaunch"),
       goldenLaunch: get(data, "getGoldenLaunch"),
       project: get(data, "getProject"),
       job: get(data, "getJob")
-    }),
-    [data]
-  );
+    };
+  }, [data]);
 
-  const { screenshots } = useMemo(() => {
-    if (!thisLaunch || !goldenLaunch) return {};
+  useEffect(() => {
+    if (!thisLaunch || !goldenLaunch) {
+      return;
+    }
     const scs = joinLaunches({
       base: get(thisLaunch, "screenshots", []),
       golden: get(goldenLaunch, "screenshots", [])
     });
-    const withUrl = scs.map(sc => ({
-      ...sc,
-      baseUrl: sc.name
-        ? firebase
-            .storage()
-            .ref(`${projectId}/${jobId}/${launchId}/${sc.id}/${sc.name}`)
-            .getDownloadURL()
-        : undefined,
-      diffUrl: sc.diff
-        ? firebase
-            .storage()
-            .ref(`${projectId}/${jobId}/${launchId}/${sc.id}/${sc.diff}`)
-            .getDownloadURL()
-        : undefined,
-      goldenUrl: sc.golden
-        ? firebase
-            .storage()
-            .ref(`${projectId}/${jobId}/${sc.goldenLaunchId}/${sc.goldenId}/${sc.golden}`)
-            .getDownloadURL()
-        : undefined
-    }));
-    return { screenshots: withUrl };
+
+    Promise.map(scs, sc => {
+      return Promise.all([
+        sc.name
+          ? firebase
+              .storage()
+              .ref(`screenshots/${projectId}/${jobId}/${launchId}/${sc.id}/${sc.name}`)
+              .getDownloadURL()
+          : undefined,
+        sc.diff
+          ? firebase
+              .storage()
+              .ref(`screenshots/${projectId}/${jobId}/${launchId}/${sc.id}/${sc.diff}`)
+              .getDownloadURL()
+          : undefined,
+        sc.golden
+          ? firebase
+              .storage()
+              .ref(
+                `screenshots/${projectId}/${jobId}/${sc.goldenLaunchId}/${sc.goldenId}/${sc.golden}`
+              )
+              .getDownloadURL()
+          : undefined
+      ]).spread((baseUrl, diffUrl, goldenUrl) => {
+        return {
+          ...sc,
+          baseUrl,
+          diffUrl,
+          goldenUrl
+        };
+      });
+    }).then(screenshotsWithUrl => setScreenshots(screenshotsWithUrl));
   }, [thisLaunch, goldenLaunch, projectId, launchId, jobId]);
 
   if (error) {
     enqueueSnackbar(error && error.message, { variant: "error" });
     return null;
   }
-  if (loading) {
+
+  if (loading || isEmpty(screenshots)) {
     return <PageLoader />;
   }
+
   return (
     <Page>
       <PageTitle
@@ -128,11 +149,11 @@ export default function JobView() {
           },
           {
             href: `/projects/${projectId}/jobs`,
-            label: projectName,
+            label: project.name,
             Icon: AccountTreeIcon
           },
           {
-            label: jobName,
+            label: job.name,
             href: `/projects/${projectId}/jobs/${jobId}/launches`,
             Icon: WorkIcon
           },
