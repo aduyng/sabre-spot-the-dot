@@ -15,6 +15,7 @@ import ProjectList from "./ProjectList";
 import PageTitle from "../../components/PageTitle";
 import GET_PROJECTS from "./GET_PROJECTS.gql";
 import getFirstKeyValue from "../../libs/getFirstKeyValue";
+import PageLoader from "../../components/PageLoader";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -56,6 +57,9 @@ export default function HomePage() {
   if (error) {
     enqueueSnackbar(error.message, { variant: "error" });
     return null;
+  }
+  if (!data) {
+    return <PageLoader />;
   }
 
   return (

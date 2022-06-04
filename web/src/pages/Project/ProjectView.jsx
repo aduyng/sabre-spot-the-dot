@@ -14,6 +14,7 @@ import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import Page from "../../components/Page/Page";
+import PageLoader from "../../components/PageLoader";
 import PageTitle from "../../components/PageTitle";
 import GET_PROJECT from "./GET_PROJECT.gql";
 import JobsList from "./JobsList";
@@ -65,7 +66,7 @@ export default function ProjectView() {
   const { jobs, project } = useMemo(() => {
     return { jobs: get(data, "getJobs"), project: get(data, "getProject") };
   }, [data]);
-  if (!data) return null;
+  if (!data) return <PageLoader />;
   if (error) {
     enqueueSnackbar(error.message, { variant: "error" });
     return null;
