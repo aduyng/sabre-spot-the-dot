@@ -101,6 +101,18 @@ export default function Sidebar({ isOpened, onClose }) {
           </ListItemIcon>
           <ListItemText primary={t("API Keys")} />
         </ListItem>
+        <ListItem
+          button
+          selected={location.pathname === "/"}
+          onClick={onClose}
+          component={Link}
+          to="/"
+        >
+          <ListItemIcon>
+            <DescriptionOutlined color="primary" />
+          </ListItemIcon>
+          <ListItemText primary={t("Projects")} />
+        </ListItem>
       </List>
       <List>
         <ListItem>

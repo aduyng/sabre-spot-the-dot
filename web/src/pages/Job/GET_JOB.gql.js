@@ -1,17 +1,35 @@
 import gql from "graphql-tag";
 
 export default gql`
-    query getJob($id: ID!) {
-        getJob(id: $id) {
-            name
-            id
-        }
-        getLaunches(jobId: $id) {
-            id
-            status
-            startedAt
-            completedAt
-            isGolden
-        }
+  query getJob($id: ID!, $projectId: ID!) {
+    getJob(id: $id) {
+      name
+      id
+      url
+      status
+      createdAt
+      updatedAt
+      createdByUserId
+      updatedByUserId
     }
-`
+
+    getLaunches(jobId: $id) {
+      id
+      name
+      commit
+      branch
+      status
+      createdAt
+      createdByUserId
+      updatedAt
+      updatedByUserId
+      isGolden
+      avgPercentDiff
+    }
+
+    getProject(id: $projectId) {
+      id
+      name
+    }
+  }
+`;

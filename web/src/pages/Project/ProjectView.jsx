@@ -1,4 +1,5 @@
 import { useQuery } from "@apollo/react-hooks";
+import { Typography } from "@material-ui/core";
 import Avatar from "@material-ui/core/Avatar";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
@@ -94,7 +95,12 @@ export default function ProjectView() {
               </Avatar>
             }
             data-testid="projects-header"
-            title={t("Jobs for {{project}}", { project: project.name })}
+            title={
+              <Typography variant="h3">
+                {t("Jobs for {{project}}", { project: project.name })}
+              </Typography>
+            }
+            disableTypography
           />
           <CardContent>
             <JobsList jobs={jobs} />

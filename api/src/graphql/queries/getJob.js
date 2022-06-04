@@ -1,5 +1,5 @@
-const getJob = require("../../bs/Job/getJob")
+const getJob = require("../../bs/Job/getJob");
 
-module.exports = async (args, { id }, { user }) => {
+module.exports = (args, { id }, { user }) => {
   return getJob({ jobId: id, userId: user.id });
 };

@@ -13,11 +13,12 @@ import { useSnackbar } from "notistack";
 import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
-import GET_PROJECT from "../Project/GET_PROJECT.gql";
+import Typography from "@material-ui/core/Typography";
 import Page from "../../components/Page/Page";
 import PageTitle from "../../components/PageTitle";
 import GET_JOB from "./GET_JOB.gql";
 import LaunchesList from "./LaunchesList";
+import PageLoader from "../../components/PageLoader";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -61,26 +62,21 @@ export default function JobView() {
   const { enqueueSnackbar } = useSnackbar();
   const { jobId, projectId } = useParams();
   const { data, error } = useQuery(GET_JOB, {
-    variables: { id: jobId }
+    variables: { id: jobId, projectId }
   });
-  const { data: projectData, error: pError } = useQuery(GET_PROJECT, {
-    variables: { id: projectId }
-  });
-  const { launches, job } = useMemo(
-    () => ({ launches: get(data, "getLaunches"), job: get(data, "getJob") }),
+  const { launches, job, project } = useMemo(
+    () => ({
+      launches: get(data, "getLaunches"),
+      job: get(data, "getJob"),
+      project: get(data, "getProject")
+    }),
     [data]
   );
-  const { project } = useMemo(
-    () => ({
-      project: get(projectData, "getProject")
-    }),
-    [projectData]
-  );
-  if (!data || !projectData) return null;
   if (error) {
-    enqueueSnackbar((error && error.message) || (pError && pError.message), { variant: "error" });
+    enqueueSnackbar(error && error.message, { variant: "error" });
     return null;
   }
+  if (!data) return <PageLoader />;
   return (
     <Page>
       <PageTitle
@@ -91,7 +87,7 @@ export default function JobView() {
             Icon: HomeIcon
           },
           {
-            href: `/projects/${project.id}/jobs`,
+            href: `/projects/${projectId}/jobs`,
             label: project.name,
             Icon: AccountTreeIcon
           },
@@ -111,7 +107,10 @@ export default function JobView() {
               </Avatar>
             }
             data-testid="projects-header"
-            title={t("Launches for {{project}}", { project: job.name })}
+            title={
+              <Typography variant="h3">{t("Launches for {{job}}", { job: job.name })}</Typography>
+            }
+            disableTypography
           />
           <CardContent>
             <LaunchesList launches={launches} />

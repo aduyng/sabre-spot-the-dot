@@ -18,7 +18,6 @@ import "../../../i18n/i18n";
 import NewVersionNotice from "../../NewVersionNoticeDialog/NewVersionNoticeDialog";
 import globalConfig from "./global.json";
 import GET_CONFIGURATION_QUERY from "./GET_CONFIGURATION.gql";
-import katanaTheme from "../katana";
 
 const client = createClient();
 
@@ -36,7 +35,7 @@ export default function App() {
   );
 
   const { theme, config } = useMemo(() => {
-    const t = createTheme(katanaTheme);
+    const t = createTheme();
     if (!configuration) {
       return { theme: t };
     }

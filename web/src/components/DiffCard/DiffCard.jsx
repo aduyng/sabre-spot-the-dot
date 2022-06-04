@@ -1,24 +1,24 @@
-import {
-  Card,
-  CardHeader,
-  Typography,
-  Grid,
-  IconButton,
-  CardContent,
-  GridList,
-  GridListTile,
-  Box
-} from "@material-ui/core";
+import React, { useState } from "react";
+import Card from "@material-ui/core/Card";
+import CardHeader from "@material-ui/core/CardHeader";
+import Typography from "@material-ui/core/Typography";
+import Grid from "@material-ui/core/Grid";
+import IconButton from "@material-ui/core/IconButton";
+import CardContent from "@material-ui/core/CardContent";
+import GridList from "@material-ui/core/GridList";
+import GridListTile from "@material-ui/core/GridListTile";
+import Box from "@material-ui/core/Box";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import PropTypes from "prop-types";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
-import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import React from "react";
+import Zoom from "react-medium-image-zoom";
 import CircularProgressWithLabel from "./CircularProgressWithLabel";
+import "react-medium-image-zoom/dist/styles.css";
+import Img from "./Img";
 
-const useStyles = makeStyles({
-  root: {
-    width: "100%"
+const useStyles = makeStyles(theme => ({
+  expanded: {
+    backgroundColor: theme.palette.grey[100]
   },
   regular: {
     transform: "rotate(0deg)",
@@ -31,15 +31,19 @@ const useStyles = makeStyles({
     flexWrap: "nowrap",
     flexGrow: 0,
     flexBasis: 0
+  },
+  cardContent: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center"
   }
-});
-
+}));
 export default function DiffCard({
-  screenshot: { goldenUrl, diffUrl, url, diffPercentage, expanded, rightButton, name },
-  toggle
+  screenshot: { goldenUrl, diffUrl, baseUrl, diffPercentage, name }
 }) {
+  const [expanded, setExpanded] = useState(false);
   const classes = useStyles();
-  const handleExpand = () => toggle();
+  const handleExpand = () => setExpanded(val => !val);
   const RightButtonCardHeader = () => (
     <CardHeader
       avatar={<CircularProgressWithLabel value={diffPercentage} />}
@@ -56,41 +60,29 @@ export default function DiffCard({
 
   return (
     <Grid item xs={expanded ? 12 : 6}>
-      <Card className={classes.root}>
-        {rightButton ? (
-          <RightButtonCardHeader />
-        ) : (
-          <CardHeader
-            action={
-              <Box paddingTop={1}>
-                <CircularProgressWithLabel value={diffPercentage} />
-              </Box>
-            }
-            avatar={
-              <Box display="flex" alignItems="center" justifyContent="center">
-                <IconButton onClick={handleExpand}>
-                  <ChevronLeftIcon className={expanded ? classes.backwards : null} />
-                </IconButton>
-                <Typography>{name}</Typography>
-              </Box>
-            }
-          />
-        )}
+      <Card className={expanded ? classes.expanded : null}>
+        <RightButtonCardHeader />
         <CardContent>
-          <GridList cols={expanded ? 3 : 1} cellHeight={180} className={classes.imagelist}>
-            <GridListTile>
-              <img src={diffUrl} alt="diff" />
+          <GridList cols={expanded ? 3 : 1} cellHeight={240} className={classes.imagelist}>
+            <GridListTile className={classes.cardContent}>
+              <Zoom>
+                <Img src={diffUrl} alt="diff" label="Difference" />
+              </Zoom>
             </GridListTile>
-            {expanded ? (
-              <>
-                <GridListTile>
-                  <img src={goldenUrl} alt="base" />
-                </GridListTile>
-                <GridListTile>
-                  <img src={url} alt="new" />
-                </GridListTile>
-              </>
-            ) : null}
+            {expanded && (
+              <GridListTile>
+                <Zoom>
+                  <Img src={goldenUrl} alt="golden" label="Golden Launch" />
+                </Zoom>
+              </GridListTile>
+            )}
+            {expanded && (
+              <GridListTile>
+                <Zoom>
+                  <Img src={baseUrl} alt="base" label="Curent Launch" />
+                </Zoom>
+              </GridListTile>
+            )}
           </GridList>
         </CardContent>
       </Card>
@@ -99,16 +91,13 @@ export default function DiffCard({
 }
 DiffCard.propTypes = {
   screenshot: PropTypes.shape({
-    url: PropTypes.string.isRequired,
+    baseUrl: PropTypes.string.isRequired,
     diffUrl: PropTypes.string.isRequired,
     goldenUrl: PropTypes.string.isRequired,
     diffPercentage: PropTypes.number.isRequired,
-    size: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     createdAt: PropTypes.number.isRequired,
     status: PropTypes.string.isRequired,
-    expanded: PropTypes.bool.isRequired,
-    rightButton: PropTypes.bool.isRequired
-  }).isRequired,
-  toggle: PropTypes.func.isRequired
+    expanded: PropTypes.bool
+  }).isRequired
 };

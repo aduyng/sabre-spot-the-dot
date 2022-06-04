@@ -7,9 +7,12 @@ import PageviewIcon from "@material-ui/icons/Pageview";
 import get from "lodash/get";
 import map from "lodash/map";
 import { arrayOf, shape, string } from "prop-types";
+import CheckIcon from "@material-ui/icons/Check";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useRouteMatch } from "react-router-dom";
+import { useTheme } from "@material-ui/core/styles";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import TableBody from "../../components/TableListingPage/TableBody";
 import TableHead from "../../components/TableListingPage/TableHead";
 import formatDateTime from "../../libs/formatDateTime";
@@ -32,7 +35,6 @@ export default function LaunchesList({ launches }) {
   const classes = useStyles();
   const { t } = useTranslation();
   const { url } = useRouteMatch();
-
   const columns = [
     {
       id: "id",
@@ -40,21 +42,27 @@ export default function LaunchesList({ launches }) {
     },
     {
       id: "status",
-      label: "Status"
+      label: "Status",
+      fn: value => (value === "in-progress" ? <CircularProgress /> : value)
     },
     {
-      id: "startedAt",
-      label: "Started At",
+      id: "createdAt",
+      label: "Created At",
       fn: value => formatDateTime(value)
     },
     {
-      id: "completedAt",
-      label: "Completed At",
+      id: "updatedAt",
+      label: "Updated At",
       fn: value => formatDateTime(value)
     },
     {
       id: "isGolden",
-      label: "Golden Version"
+      label: "Golden Version",
+      fn: value => (value ? <CheckIcon color="primary" fontSize="large" /> : "")
+    },
+    {
+      id: "avgPercentDiff",
+      label: "Avg. Percent Difference"
     }
   ];
 
@@ -81,7 +89,7 @@ export default function LaunchesList({ launches }) {
               {map(columns, column => {
                 return (
                   <TableCell key={column.id} align={column.align}>
-                    {column.fn ? column.fn(get(row, column.id)) : `${get(row, column.id)}`}
+                    {column.fn ? column.fn(get(row, column.id)) : get(row, column.id)}
                   </TableCell>
                 );
               })}

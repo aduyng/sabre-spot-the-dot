@@ -4,7 +4,7 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import Helmet from "react-helmet";
 import { useTranslation } from "react-i18next";
 import Typography from "@material-ui/core/Typography";
-import { string, node, arrayOf, oneOfType, bool, shape } from "prop-types";
+import { string, node, arrayOf, oneOfType, bool, shape, elementType } from "prop-types";
 import Button from "@material-ui/core/Button";
 import ArrowBack from "@material-ui/icons/ArrowBack";
 import Grid from "@material-ui/core/Grid";
@@ -14,7 +14,6 @@ import isEmpty from "lodash/isEmpty";
 import CloseIcon from "@material-ui/icons/Close";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import Breadcrumbs from "./Breadcrumbs/Breadcrumbs";
-import { Icon } from "@material-ui/core";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -159,7 +158,7 @@ PageTitle.propTypes = {
       href: string,
       method: string,
       label: string.isRequired,
-      Icon: Icon
+      Icon: elementType
     })
   )
 };

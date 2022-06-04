@@ -1,25 +1,50 @@
-import gql from "graphql-tag"
+import gql from "graphql-tag";
 
 export default gql`
-    query getLaunch($id: ID!) {
-        getLaunch(id: $id) {
-            id
-            status
-            startedAt
-            completedAt
-            isGolden
-        }
-        getScreenshots(launchId: $id) {
-            id
-            name
-            url
-            size
-            diffUrl
-            goldenUrl
-            diffPercentage
-            status
-            createdAt
-        }
-        
+  query getLaunch($launchId: ID!, $jobId: ID!, $projectId: ID!) {
+    getLaunch(id: $launchId) {
+      id
+      name
+      status
+      createdAt
+      createdByUserId
+      updatedAt
+      updatedByUserId
+      url
+      number
+      commit
+      branch
+      isGolden
+      screenshots {
+        id
+        launchId
+        name
+        diff
+        diffPercentage
+        status
+        createdAt
+      }
     }
-`
+    getGoldenLaunch(id: $jobId) {
+      id
+      name
+      screenshots {
+        id
+        launchId
+        name
+        diff
+        diffPercentage
+        status
+        createdAt
+      }
+    }
+    getJob(id: $jobId) {
+      id
+      name
+    }
+    getProject(id: $projectId) {
+      id
+      name
+    }
+  }
+`;
