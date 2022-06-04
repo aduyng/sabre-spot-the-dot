@@ -56,11 +56,13 @@ export default function DiffCard({
       <Card className={classes.root}>
         <RightButtonCardHeader />
         <CardContent>
-          <GridList cols={expanded ? 3 : 1} cellHeight={180} className={classes.imagelist}>
-            <GridListTile>
-              <img src={diffUrl} alt="diff" />
-            </GridListTile>
-            {expanded ? (
+          <GridList cols={expanded ? 6 : 1} cellHeight={180} className={classes.imagelist}>
+            {!expanded && (
+              <GridListTile>
+                <img src={diffUrl} alt="diff" />
+              </GridListTile>
+            )}
+            {expanded && (
               <>
                 <GridListTile>
                   <img src={goldenUrl} alt="golden" />
@@ -69,7 +71,7 @@ export default function DiffCard({
                   <img src={baseUrl} alt="base" />
                 </GridListTile>
               </>
-            ) : null}
+            )}
           </GridList>
         </CardContent>
       </Card>
@@ -82,11 +84,9 @@ DiffCard.propTypes = {
     diffUrl: PropTypes.string.isRequired,
     goldenUrl: PropTypes.string.isRequired,
     diffPercentage: PropTypes.number.isRequired,
-    size: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     createdAt: PropTypes.number.isRequired,
     status: PropTypes.string.isRequired,
-    expanded: PropTypes.bool.isRequired,
-    rightButton: PropTypes.bool.isRequired
+    expanded: PropTypes.bool
   }).isRequired
 };

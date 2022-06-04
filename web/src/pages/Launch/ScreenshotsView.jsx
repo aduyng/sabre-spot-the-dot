@@ -15,6 +15,7 @@ const useStyles = makeStyles({
 export default function ScreenshotsView({ screenshots }) {
   const styles = useStyles();
   const grid = useRef();
+
   useEffect(() => {
     wrapGrid(grid.current, {
       easing: "easeInOut",
@@ -22,6 +23,7 @@ export default function ScreenshotsView({ screenshots }) {
       duration: 400
     });
   }, []);
+
   return (
     <Grid container innerRef={grid} spacing={3} className={styles.grid}>
       {screenshots &&
@@ -33,10 +35,5 @@ export default function ScreenshotsView({ screenshots }) {
 }
 
 ScreenshotsView.propTypes = {
-  screenshots: PropTypes.arrayOf(
-    PropTypes.shape({
-      expanded: PropTypes.bool.isRequired,
-      rightButton: PropTypes.bool.isRequired
-    })
-  ).isRequired
+  screenshots: PropTypes.arrayOf(PropTypes.shape({})).isRequired
 };
