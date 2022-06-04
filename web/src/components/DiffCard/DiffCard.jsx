@@ -11,11 +11,14 @@ import Box from "@material-ui/core/Box";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import PropTypes from "prop-types";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
+import Zoom from "react-medium-image-zoom";
 import CircularProgressWithLabel from "./CircularProgressWithLabel";
+import "react-medium-image-zoom/dist/styles.css";
+import Img from "./Img";
 
-const useStyles = makeStyles({
-  root: {
-    width: "100%"
+const useStyles = makeStyles(theme => ({
+  expanded: {
+    backgroundColor: theme.palette.grey[100]
   },
   regular: {
     transform: "rotate(0deg)",
@@ -28,9 +31,13 @@ const useStyles = makeStyles({
     flexWrap: "nowrap",
     flexGrow: 0,
     flexBasis: 0
+  },
+  cardContent: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center"
   }
-});
-
+}));
 export default function DiffCard({
   screenshot: { goldenUrl, diffUrl, baseUrl, diffPercentage, name }
 }) {
@@ -53,24 +60,28 @@ export default function DiffCard({
 
   return (
     <Grid item xs={expanded ? 12 : 6}>
-      <Card className={classes.root}>
+      <Card className={expanded ? classes.expanded : null}>
         <RightButtonCardHeader />
         <CardContent>
-          <GridList cols={expanded ? 6 : 1} cellHeight={180} className={classes.imagelist}>
-            {!expanded && (
+          <GridList cols={expanded ? 3 : 1} cellHeight={240} className={classes.imagelist}>
+            <GridListTile className={classes.cardContent}>
+              <Zoom>
+                <Img src={diffUrl} alt="diff" label="Difference" />
+              </Zoom>
+            </GridListTile>
+            {expanded && (
               <GridListTile>
-                <img src={diffUrl} alt="diff" />
+                <Zoom>
+                  <Img src={goldenUrl} alt="golden" label="Golden Launch" />
+                </Zoom>
               </GridListTile>
             )}
             {expanded && (
-              <>
-                <GridListTile>
-                  <img src={goldenUrl} alt="golden" />
-                </GridListTile>
-                <GridListTile>
-                  <img src={baseUrl} alt="base" />
-                </GridListTile>
-              </>
+              <GridListTile>
+                <Zoom>
+                  <Img src={baseUrl} alt="base" label="Curent Launch" />
+                </Zoom>
+              </GridListTile>
             )}
           </GridList>
         </CardContent>

@@ -1,7 +1,6 @@
 import Promise from "bluebird";
 import { useQuery } from "@apollo/react-hooks";
 import Typography from "@material-ui/core/Typography";
-import Link from "@material-ui/core/Link";
 import Avatar from "@material-ui/core/Avatar";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
@@ -18,6 +17,15 @@ import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import isEmpty from "lodash/isEmpty";
 import get from "lodash/get";
+import Box from "@material-ui/core/Box";
+import MenuItem from "@material-ui/core/MenuItem";
+import Select from "@material-ui/core/Select";
+import InputLabel from "@material-ui/core/InputLabel";
+import FormControl from "@material-ui/core/FormControl";
+import Slider from "@material-ui/core/Slider";
+import Button from "@material-ui/core/Button";
+import Grid from "@material-ui/core/Grid";
+import Input from "@material-ui/core/Input";
 import ScreenshotsView from "./ScreenshotsView";
 import initializeFirebase from "../../firebase/initialize";
 import Page from "../../components/Page/Page";
@@ -42,7 +50,7 @@ const useStyles = makeStyles(theme => ({
     width: "100%",
     "& .MuiCardContent-root": {
       paddingLeft: theme.spacing(0),
-      paddingRight: theme.spacing(4)
+      paddingRight: theme.spacing(0)
     }
   },
   toolbar: {
@@ -60,8 +68,37 @@ const useStyles = makeStyles(theme => ({
       width: "unset",
       marginTop: "unset"
     }
+  },
+  controlBox: {
+    marginInline: "5vw",
+    marginBottom: theme.spacing(5),
+    padding: "1rem",
+    borderRadius: "1rem",
+    backgroundColor: theme.palette.grey[100],
+    display: "flex",
+    gap: theme.spacing(2),
+    alignItems: "center"
+  },
+  sortFilterForm: {
+    minWidth: "180px",
+    margin: theme.spacing(1)
+  },
+  sliderContainer: {
+    width: "250px",
+    marginLeft: theme.spacing(2)
   }
 }));
+
+const sortMap = {
+  "Diff. Percentage": sc =>
+    sc.slice().sort((a, b) => (b.diffPercentage % 100) - (a.diffPercentage % 100)),
+  "Created At": sc => sc.slice().sort((a, b) => b.createdAt - a.createdAt),
+  "": sc => sc
+};
+
+const cutoffFilter = (sc, cutoff) => {
+  return sc.filter(s => s.diffPercentage % 100 > (cutoff === "" ? 0 : Number(cutoff)));
+};
 
 export default function JobView() {
   const classes = useStyles();
@@ -69,7 +106,10 @@ export default function JobView() {
   const { enqueueSnackbar } = useSnackbar();
   const firebase = initializeFirebase();
   const { launchId, projectId, jobId } = useParams();
-  const [screenshots, setScreenshots] = useState();
+  const [screenshots, setScreenshots] = useState([]);
+  const [transformedScreenshots, setTransformedScreenshots] = useState(screenshots);
+  const [sort, setSort] = useState("");
+  const [cutoff, setCutoff] = useState(0);
   const { data, error, loading } = useQuery(GET_LAUNCH, {
     variables: { launchId, jobId, projectId }
   });
@@ -129,6 +169,12 @@ export default function JobView() {
     }).then(screenshotsWithUrl => setScreenshots(screenshotsWithUrl));
   }, [thisLaunch, goldenLaunch, projectId, launchId, jobId]);
 
+  useEffect(() => setTransformedScreenshots(sortMap[sort](cutoffFilter(screenshots, cutoff))), [
+    sort,
+    cutoff,
+    screenshots
+  ]);
+
   if (error) {
     enqueueSnackbar(error && error.message, { variant: "error" });
     return null;
@@ -137,6 +183,16 @@ export default function JobView() {
   if (loading || isEmpty(screenshots)) {
     return <PageLoader />;
   }
+  const handleSelect = e => setSort(e.target.value);
+  const handleCutoffChange = (_, val) => setCutoff(val);
+  const handleInputChange = e => setCutoff(e.target.value === "" ? "" : Number(e.target.value));
+  const handleBlur = () => {
+    if (cutoff < 0) {
+      setCutoff(0);
+    } else if (cutoff > 100) {
+      setCutoff(100);
+    }
+  };
 
   return (
     <Page>
@@ -194,13 +250,47 @@ export default function JobView() {
                 <Typography>
                   {t("Commit: {{commit}}", { commit: get(thisLaunch, "commit") })}
                 </Typography>
-                <Link href={get(thisLaunch, "url")}>URL</Link>
+                <Button href={get(thisLaunch, "url")} variant="contained">
+                  Go To Jenkins Build
+                </Button>
               </>
             }
           />
 
           <CardContent>
-            <ScreenshotsView screenshots={screenshots} />
+            <Box className={classes.controlBox}>
+              <FormControl className={classes.sortFilterForm} variant="filled">
+                <InputLabel id="sort-by-label">Sort By:</InputLabel>
+                <Select labelId="sort-by-label" onChange={handleSelect} value={sort}>
+                  {Object.keys(sortMap).map(s => (
+                    <MenuItem value={s}>{s || "None"}</MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+              <Box className={classes.sliderContainer}>
+                <Typography>Difference Percentage Cutoff</Typography>
+                <Grid container spacing={2} alignItems="center">
+                  <Grid item xs>
+                    <Slider value={cutoff} onChange={handleCutoffChange} />
+                  </Grid>
+                  <Grid item>
+                    <Input
+                      value={cutoff}
+                      margin="dense"
+                      onChange={handleInputChange}
+                      onBlur={handleBlur}
+                      inputProps={{
+                        step: 5,
+                        min: 0,
+                        max: 100,
+                        type: "number"
+                      }}
+                    />
+                  </Grid>
+                </Grid>
+              </Box>
+            </Box>
+            <ScreenshotsView screenshots={transformedScreenshots} />
           </CardContent>
         </Card>
       </div>

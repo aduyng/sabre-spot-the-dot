@@ -24,6 +24,7 @@ export default gql`
       updatedAt
       updatedByUserId
       isGolden
+      avgPercentDiff
     }
 
     getProject(id: $projectId) {

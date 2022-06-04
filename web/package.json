@@ -60,6 +60,7 @@
     "react-firebaseui": "^4.1.0",
     "react-helmet": "^5.2.1",
     "react-i18next": "^11.7.3",
+    "react-medium-image-zoom": "^4.4.3",
     "react-progressive-image": "^0.6.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.0",

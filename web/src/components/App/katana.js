@@ -1,18 +1,18 @@
-
 const katanaTheme = {
   palette: {
     common: {
       black: "#121315",
+      katana: "#E50000"
     },
     primary: {
       main: "#006074",
       light: "#BCEAF8",
-      dark: "#002530",
+      dark: "#002530"
     },
     info: {
       main: "#006074",
       light: "#BCEAF8",
-      dark: "#002530",
+      dark: "#002530"
     },
     success: {
       main: "#008247", // 600
@@ -27,7 +27,7 @@ const katanaTheme = {
       600: "#006539",
       700: "#004d2b",
       800: "#003920",
-      900: "#002815",
+      900: "#002815"
     },
     grey: {
       50: "#f6f6f7",
@@ -39,26 +39,26 @@ const katanaTheme = {
       600: "#54575d",
       700: "#404247",
       800: "#2e3034",
-      900: "#202224",
+      900: "#202224"
     },
     error: {
       main: "#D13630",
       dark: "#690000",
-      light: "#FFBCB0",
+      light: "#FFBCB0"
     },
     warning: {
       dark: "#A75F00",
       light: "#FFF7D4",
-      main: "#E7CC00",
+      main: "#E7CC00"
     },
     text: {
-      primary: "#404247",
-      secondary: "#e1e2e5",
+      primary: "#2e3034",
+      secondary: "#adb1b8"
     },
     background: {
-      default: "#f6f6f7",
-    },
-  },
+      default: "#f6f6f7"
+    }
+  }
 };
 
 export default katanaTheme;
