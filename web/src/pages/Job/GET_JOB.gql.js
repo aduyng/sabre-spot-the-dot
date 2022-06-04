@@ -12,6 +12,7 @@ export default gql`
       createdByUserId
       updatedByUserId
     }
+
     getLaunches(jobId: $id) {
       id
       name
@@ -24,6 +25,7 @@ export default gql`
       updatedByUserId
       isGolden
     }
+
     getProject(id: $projectId) {
       id
       name
