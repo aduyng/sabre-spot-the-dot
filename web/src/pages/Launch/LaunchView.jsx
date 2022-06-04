@@ -167,7 +167,7 @@ export default function JobView() {
         };
       });
     }).then(screenshotsWithUrl => setScreenshots(screenshotsWithUrl));
-  }, [thisLaunch, goldenLaunch, projectId, launchId, jobId]);
+  }, [thisLaunch, goldenLaunch, projectId, launchId, jobId, firebase]);
 
   useEffect(() => setTransformedScreenshots(sortMap[sort](cutoffFilter(screenshots, cutoff))), [
     sort,
