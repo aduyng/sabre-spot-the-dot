@@ -108,7 +108,7 @@ export default function JobView() {
             }
             data-testid="projects-header"
             title={
-              <Typography variant="h3">{t("Launches for {{job}}", { job: job.name })}</Typography>
+              <Typography variant="h3">{t("Builds for {{job}}", { job: job.name })}</Typography>
             }
             disableTypography
           />

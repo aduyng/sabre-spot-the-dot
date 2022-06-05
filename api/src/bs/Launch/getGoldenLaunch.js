@@ -6,6 +6,6 @@ module.exports = async ({ userId, jobId }) => {
     .column("Launch.*")
     .innerJoin("Job", "Job.id", "Launch.jobId")
     .innerJoin("UserProjectRole", "Job.projectId", "UserProjectRole.projectId")
-    .where({ "UserProjectRole.userId": userId, "Job.id": jobId })
+    .where({ "UserProjectRole.userId": userId, "Job.id": jobId, isGolden: true })
     .first();
 };
