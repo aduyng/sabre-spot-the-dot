@@ -72,14 +72,14 @@ export default function DiffCard({
             {expanded && (
               <GridListTile>
                 <Zoom>
-                  <Img src={goldenUrl} alt="golden" label="Golden Launch" />
+                  <Img src={goldenUrl} alt="golden" label="Golden Build" />
                 </Zoom>
               </GridListTile>
             )}
             {expanded && (
               <GridListTile>
                 <Zoom>
-                  <Img src={baseUrl} alt="base" label="Curent Launch" />
+                  <Img src={baseUrl} alt="base" label="Current Build" />
                 </Zoom>
               </GridListTile>
             )}

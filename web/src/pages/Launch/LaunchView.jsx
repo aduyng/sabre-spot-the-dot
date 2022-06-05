@@ -263,7 +263,9 @@ export default function JobView() {
                 <InputLabel id="sort-by-label">Sort By:</InputLabel>
                 <Select labelId="sort-by-label" onChange={handleSelect} value={sort}>
                   {Object.keys(sortMap).map(s => (
-                    <MenuItem value={s}>{s || "None"}</MenuItem>
+                    <MenuItem key={s} value={s}>
+                      {s || "None"}
+                    </MenuItem>
                   ))}
                 </Select>
               </FormControl>

@@ -10,7 +10,8 @@ const useStyles = makeStyles(theme => ({
     maxHeight: "inherit",
     height: "inherit",
     width: "inherit",
-    objectFit: "cover"
+    objectFit: "cover",
+    border: `1px solid ${theme.palette.common.black}`
   },
   label: {
     position: "relative",
