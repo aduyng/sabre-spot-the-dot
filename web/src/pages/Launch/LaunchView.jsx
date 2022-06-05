@@ -295,6 +295,12 @@ export default function JobView() {
                   </Grid>
                 </Grid>
               </Box>
+              {!!(screenshots.length - transformedScreenshots.length) && (
+                <Typography>
+                  {`Currently not shown: 
+                  ${screenshots.length - transformedScreenshots.length}`}
+                </Typography>
+              )}
             </Box>
             <ScreenshotsView screenshots={transformedScreenshots} />
           </CardContent>

@@ -36,7 +36,7 @@ export default function ScreenshotsView({ screenshots }) {
         })
       ) : (
         <Typography className={styles.emptyText}>
-          Looks like there are no comparisons for this build...
+          Looks like there is no screenshots to show...
         </Typography>
       )}
     </Grid>
