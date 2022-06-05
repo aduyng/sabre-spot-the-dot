@@ -72,6 +72,7 @@ export default function HomePage() {
             Icon: HomeIcon
           }
         ]}
+        showBackButton={false}
       />
       <div className={classes.root}>
         <Card className={classes.boxContent}>

@@ -254,7 +254,7 @@ export default function JobView() {
                     {t("Commit: {{commit}}", { commit: get(thisLaunch, "commit") })}
                   </Typography>
                 )}
-                <Button href={get(thisLaunch, "url")} variant="contained">
+                <Button href={get(thisLaunch, "url")} variant="contained" target="_blank">
                   Go To Jenkins Build
                 </Button>
               </>
