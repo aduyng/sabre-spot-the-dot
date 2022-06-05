@@ -65,7 +65,8 @@ export default function LaunchesList({ launches }) {
     },
     {
       id: "avgPercentDiff",
-      label: "Avg. Percent Difference"
+      label: "Avg. Percent Difference",
+      fn: value => `${Math.floor(value % 100)}%`
     }
   ];
 

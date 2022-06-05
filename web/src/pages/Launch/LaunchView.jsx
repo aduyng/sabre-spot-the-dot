@@ -92,7 +92,7 @@ const useStyles = makeStyles(theme => ({
 const sortMap = {
   "Diff. Percentage": sc =>
     sc.slice().sort((a, b) => (b.diffPercentage % 100) - (a.diffPercentage % 100)),
-  "Created At": sc => sc.slice().sort((a, b) => b.createdAt - a.createdAt),
+  "Most Recent": sc => sc.slice().sort((a, b) => b.createdAt - a.createdAt),
   "": sc => sc
 };
 
@@ -244,12 +244,16 @@ export default function JobView() {
                     createdAt: formatDateTime(get(thisLaunch, "createdAt"))
                   })}
                 </Typography>
-                <Typography>
-                  {t("Branch: {{branch}}", { branch: get(thisLaunch, "branch") })}
-                </Typography>
-                <Typography>
-                  {t("Commit: {{commit}}", { commit: get(thisLaunch, "commit") })}
-                </Typography>
+                {get(thisLaunch, "branch") && (
+                  <Typography>
+                    {t("Branch: {{branch}}", { branch: get(thisLaunch, "branch") })}
+                  </Typography>
+                )}
+                {get(thisLaunch, "commit") && (
+                  <Typography>
+                    {t("Commit: {{commit}}", { commit: get(thisLaunch, "commit") })}
+                  </Typography>
+                )}
                 <Button href={get(thisLaunch, "url")} variant="contained">
                   Go To Jenkins Build
                 </Button>

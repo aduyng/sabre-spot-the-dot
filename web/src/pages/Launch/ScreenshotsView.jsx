@@ -2,6 +2,7 @@ import { Grid, makeStyles } from "@material-ui/core";
 import React, { useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 import { wrapGrid } from "animate-css-grid";
+import Typography from "@material-ui/core/Typography";
 import DiffCard from "../../components/DiffCard/DiffCard";
 
 const useStyles = makeStyles({
@@ -9,6 +10,9 @@ const useStyles = makeStyles({
     width: "90vw",
     minHeight: "100vh",
     margin: "0 auto"
+  },
+  emptyText: {
+    textAlign: "center"
   }
 });
 
@@ -25,11 +29,16 @@ export default function ScreenshotsView({ screenshots }) {
   }, []);
 
   return (
-    <Grid container innerRef={grid} spacing={3} className={styles.grid}>
-      {screenshots &&
+    <Grid container innerRef={grid} spacing={2} className={styles.grid}>
+      {screenshots && screenshots.length > 0 ? (
         screenshots.map(sc => {
           return <DiffCard screenshot={sc} key={sc.id} />;
-        })}
+        })
+      ) : (
+        <Typography className={styles.emptyText}>
+          Looks like there are no comparisons for this build...
+        </Typography>
+      )}
     </Grid>
   );
 }

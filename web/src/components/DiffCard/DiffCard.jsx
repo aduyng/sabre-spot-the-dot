@@ -18,7 +18,12 @@ import Img from "./Img";
 
 const useStyles = makeStyles(theme => ({
   expanded: {
-    backgroundColor: theme.palette.grey[100]
+    backgroundColor: theme.palette.grey[100],
+    transition: "background-color 400ms linear"
+  },
+  notExpanded: {
+    backgroundColor: "#FFFFFF",
+    transition: "background-color 400ms linear"
   },
   regular: {
     transform: "rotate(0deg)",
@@ -60,7 +65,7 @@ export default function DiffCard({
 
   return (
     <Grid item xs={expanded ? 12 : 6}>
-      <Card className={expanded ? classes.expanded : null}>
+      <Card className={expanded ? classes.expanded : classes.notExpanded}>
         <RightButtonCardHeader />
         <CardContent>
           <GridList cols={expanded ? 3 : 1} cellHeight={240} className={classes.imagelist}>
