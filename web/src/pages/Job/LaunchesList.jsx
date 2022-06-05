@@ -40,6 +40,10 @@ export default function LaunchesList({ launches }) {
       label: "ID"
     },
     {
+      id: "name",
+      label: "Name"
+    },
+    {
       id: "status",
       label: "Status",
       fn: value => (value === "in-progress" ? <CircularProgress /> : value)
