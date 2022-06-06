@@ -5,6 +5,7 @@ module.exports = async ({ userId, projectId }) => {
   const res = await knex("Project")
     .column("Project.*")
     .innerJoin("UserProjectRole", "Project.id", "UserProjectRole.projectId")
-    .where({ "UserProjectRole.userId": userId, "Project.id": projectId }).first();
-    return res
+    .where({ "UserProjectRole.userId": userId, "Project.id": projectId })
+    .first();
+  return res;
 };

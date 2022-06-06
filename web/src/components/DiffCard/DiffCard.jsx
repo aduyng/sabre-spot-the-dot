@@ -53,7 +53,7 @@ export default function DiffCard({
   const isXsSmallScreen = useMediaQuery("(max-width:1100px)");
   const RightButtonCardHeader = () => (
     <CardHeader
-      avatar={<CircularProgressWithLabel value={diffPercentage} />}
+      avatar={<CircularProgressWithLabel value={diffPercentage || 0} />}
       action={
         <Box display="flex" alignItems="center" paddingTop={1}>
           <Typography>

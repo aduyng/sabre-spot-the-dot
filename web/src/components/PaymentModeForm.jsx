@@ -1,3 +1,4 @@
+/* eslint-disable import/extensions */
 import React, { useCallback, useState } from "react";
 import { string, func, bool, number, shape, arrayOf } from "prop-types";
 import TextField from "@material-ui/core/TextField";
@@ -7,6 +8,7 @@ import isLength from "validator/lib/isLength";
 import trim from "lodash/trim";
 import map from "lodash/map";
 import every from "lodash/every";
+// eslint-disable-next-line import/no-unresolved
 import PaymentModeAliasForm from "./PaymentModeAliasForm/PaymentModeAliasForm";
 
 const isNaN = require("lodash/isNaN");

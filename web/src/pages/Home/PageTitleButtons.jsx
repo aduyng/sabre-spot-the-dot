@@ -1,3 +1,5 @@
+/* eslint-disable import/no-unresolved */
+/* eslint-disable import/extensions */
 import React from "react";
 import { string } from "prop-types";
 import { useHistory, useParams } from "react-router-dom";

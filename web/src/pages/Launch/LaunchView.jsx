@@ -1,5 +1,5 @@
 import Promise from "bluebird";
-import { useQuery } from "@apollo/react-hooks";
+import { useMutation, useQuery } from "@apollo/react-hooks";
 import Typography from "@material-ui/core/Typography";
 import Avatar from "@material-ui/core/Avatar";
 import Card from "@material-ui/core/Card";
@@ -26,6 +26,7 @@ import Slider from "@material-ui/core/Slider";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import Input from "@material-ui/core/Input";
+import getGraphQLErrorsAsString from "../../graphql/getGraphQLErrorsAsString";
 import ScreenshotsView from "./ScreenshotsView";
 import initializeFirebase from "../../firebase/initialize";
 import Page from "../../components/Page/Page";
@@ -34,6 +35,8 @@ import formatDateTime from "../../libs/formatDateTime";
 import GET_LAUNCH from "./GET_LAUNCH.gql";
 import PageLoader from "../../components/PageLoader";
 import joinLaunches from "./joinLaunches";
+import SET_GOLDEN from "./SET_GOLDEN.gql";
+import GET_JOB from "../Job/GET_JOB.gql";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -86,6 +89,9 @@ const useStyles = makeStyles(theme => ({
   sliderContainer: {
     width: "250px",
     marginLeft: theme.spacing(2)
+  },
+  goldenButton: {
+    marginLeft: "auto"
   }
 }));
 
@@ -97,7 +103,7 @@ const sortMap = {
 };
 
 const cutoffFilter = (sc, cutoff) => {
-  return sc.filter(s => s.diffPercentage % 100 > (cutoff === "" ? 0 : Number(cutoff)));
+  return sc.filter(s => (s.diffPercentage || 99) % 100 > (cutoff === "" ? 0 : Number(cutoff)));
 };
 
 export default function JobView() {
@@ -113,6 +119,7 @@ export default function JobView() {
   const { data, error, loading } = useQuery(GET_LAUNCH, {
     variables: { launchId, jobId, projectId }
   });
+  const [setGolden, { data: mutationData, loading: mutationLoading }] = useMutation(SET_GOLDEN);
 
   const { thisLaunch, goldenLaunch, project, job } = useMemo(() => {
     if (!data) {
@@ -193,10 +200,39 @@ export default function JobView() {
       setCutoff(100);
     }
   };
-
+  const onSetGolden = () =>
+    setGolden({
+      variables: { projectId, launchId, jobId },
+      refetchQueries: [{ query: GET_JOB, variables: { projectId, id: jobId } }]
+    })
+      .then(resp => {
+        const {
+          data: { setGolden: res }
+        } = resp;
+        if (res === 200) {
+          enqueueSnackbar(
+            t("Golden launch set successfully. Golden launch is now {{name}}.", {
+              name: get(thisLaunch, "name", "this launch.")
+            }),
+            { variant: "success" }
+          );
+        } else {
+          enqueueSnackbar(t("You do not have permission to set this launch as golden."), {
+            variant: "error"
+          });
+        }
+      })
+      .catch(err => {
+        const errorAsString = getGraphQLErrorsAsString(err);
+        const translatedError = t("Unable to save because {{error}}", { error: errorAsString });
+        enqueueSnackbar(translatedError, {
+          variant: "error"
+        });
+      });
   return (
     <Page>
       <PageTitle
+        loading={mutationLoading}
         crumbs={[
           {
             href: `/`,
@@ -301,6 +337,21 @@ export default function JobView() {
                   ${screenshots.length - transformedScreenshots.length}`}
                 </Typography>
               )}
+              <Button
+                variant="contained"
+                color="secondary"
+                disabled={thisLaunch.isGolden || mutationLoading || !!mutationData}
+                className={classes.goldenButton}
+                onClick={onSetGolden}
+                // startIcon={<SaveIcon />}
+                data-testid="setGoldenButton"
+              >
+                {thisLaunch.isGolden
+                  ? t("Launch is already golden")
+                  : mutationLoading || mutationData
+                  ? t("Loading")
+                  : t("Set Launch as Golden")}
+              </Button>
             </Box>
             <ScreenshotsView screenshots={transformedScreenshots} />
           </CardContent>

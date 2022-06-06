@@ -1,7 +1,8 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import makeStyles from "@material-ui/core/styles/makeStyles";
 import PropTypes from "prop-types";
 import Typography from "@material-ui/core/Typography";
+import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles(theme => ({
   div: { height: "240px", width: "100%", display: "flex", flexDirection: "column" },
@@ -29,16 +30,27 @@ const useStyles = makeStyles(theme => ({
 
 const Img = ({ src, alt, label }) => {
   const styles = useStyles();
+  const { t } = useTranslation();
   return (
     <div className={styles.div}>
-      <img className={styles.img} src={src} alt={alt} />
-      <Typography className={styles.label}>{label}</Typography>
+      {src ? (
+        <>
+          <img className={styles.img} src={src} alt={alt} />
+          <Typography className={styles.label}>{label}</Typography>
+        </>
+      ) : (
+        <Typography>{t("No Image Found")}</Typography>
+      )}
     </div>
   );
 };
 export default Img;
 Img.propTypes = {
-  src: PropTypes.string.isRequired,
+  src: PropTypes.string,
   alt: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired
+};
+
+Img.defaultProps = {
+  src: ""
 };

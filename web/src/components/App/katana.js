@@ -9,6 +9,10 @@ const katanaTheme = {
       light: "#BCEAF8",
       dark: "#002530"
     },
+    secondary: {
+      main: "#E50000",
+      dark: "#b70000"
+    },
     info: {
       main: "#006074",
       light: "#BCEAF8",
