@@ -37,7 +37,7 @@ jobs:
       FIREBASE_PROJECT_ID: "sabre-spot-the-dot"
       FIREBASE_STORAGE_BUCKET: "sabre-spot-the-dot.appspot.com"
       FIREBASE_MESSAGING_SENDER_ID: "205994041605"
-      POSTGRES_INSTANCE_CONNECTION_NAME: "sabre-spot-the-dot:us-central1:spot-the-dot"
+      POSTGRES_INSTANCE_CONNECTION_NAME: "sabre-spot-the-dot:us-central1:spot-the-dot-micro"
       POSTGRES_DB: "spot-the-dot"
       POSTGRES_USER: "sabre"
       STD_RUNTIME_ENV: "production"
