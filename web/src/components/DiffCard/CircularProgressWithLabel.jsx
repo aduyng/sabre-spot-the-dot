@@ -3,9 +3,10 @@ import PropTypes from "prop-types";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
-import { makeStyles } from "@material-ui/core";
+import makeStyles from "@material-ui/core/styles/makeStyles";
 import clsx from "clsx";
-import { clamp, isNumber } from "lodash";
+import clamp from "lodash/clamp";
+import isNumber from "lodash/isNumber";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -50,11 +51,14 @@ export default function CircularProgressWithLabel(props) {
       <CircularProgress
         variant="determinate"
         thickness={4}
-        className={clsx(styles.top, {
-          [styles.badStatus]: progress >= 75,
-          [styles.mediumStatus]: progress >= 50 && progress < 75,
-          [styles.goodStatus]: progress < 50
-        })}
+        className={clsx(
+          styles.top,
+          showColorBasedStatus && {
+            [styles.badStatus]: progress >= 75,
+            [styles.mediumStatus]: progress >= 50 && progress < 75,
+            [styles.goodStatus]: progress < 50
+          }
+        )}
         value={progress % 100}
         size={50}
         classes={{ circle: styles.circle }}
