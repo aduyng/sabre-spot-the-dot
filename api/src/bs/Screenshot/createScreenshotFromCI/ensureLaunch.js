@@ -40,6 +40,8 @@ module.exports = async ({
       status: LAUNCH_STATUS_IN_PROGRESS,
       createdAt: Date.now(),
       createdByUserId: creator.id,
+      updatedAt: Date.now(),
+      updatedByUserId: creator.id,
       number: buildNumber,
       commit,
       branch
