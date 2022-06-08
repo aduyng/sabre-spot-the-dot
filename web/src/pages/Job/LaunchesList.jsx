@@ -64,7 +64,7 @@ export default function LaunchesList({ launches }) {
       fn: value => (value ? <CheckIcon color="primary" fontSize="large" /> : "")
     },
     {
-      id: "avgPercentDiff",
+      id: "avgDiffPercent",
       label: "Avg. Percent Difference",
       fn: value => `${Math.floor(value % 100)}%`
     }

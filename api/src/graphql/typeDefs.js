@@ -125,7 +125,7 @@ module.exports = gql`
     updatedAt: BigInt
     status: String!
     screenshots: [Screenshot]
-    avgPercentDiff: Float
+    avgDiffPercent: Int
   }
 
   input ScreenshotInput {
