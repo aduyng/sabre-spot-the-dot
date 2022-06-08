@@ -1,3 +1,3 @@
 const updateAvgDiffPercent = require("../bs/Launch/updateAvgDiffPercent");
 
-module.exports = () => updateAvgDiffPercent();
+module.exports = (...argv) => updateAvgDiffPercent(...argv);
