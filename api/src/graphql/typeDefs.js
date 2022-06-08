@@ -125,7 +125,7 @@ module.exports = gql`
     updatedAt: BigInt
     status: String!
     screenshots: [Screenshot]
-    avgPercentDiff: Float
+    avgDiffPercent: Int
   }
 
   input ScreenshotInput {
@@ -165,7 +165,6 @@ module.exports = gql`
     getLaunch(id: ID!): Launch
     getGoldenLaunch(id: ID!): Launch
     getScreenshots(id: ID!): [Screenshot]
-    getAvgPercentDiff(launchId: ID!): Float
   }
 
   type Mutation {
