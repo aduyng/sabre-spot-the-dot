@@ -1,22 +1,35 @@
 const { connectDb } = require("../../knex/knex");
 const transactionallyExecute = require("../../knex/utils/transactionallyExecute");
+const hasEditorPermission = require("../Project/hasEditorPermission");
 
 module.exports = async ({ launchId, projectId, jobId, userId }) => {
-  const knex = await connectDb();
-  const auth = await knex("UserProjectRole").where({ projectId, userId });
+  const auth = await hasEditorPermission({ projectId, userId });
   if (!auth) {
-    return 403;
+    throw new Error("Permission denied.");
   }
+  const knex = connectDb();
+  const launch = await knex("Launch")
+    .where({ "Launch.id": launchId, "Launch.jobId": jobId })
+    .whereIn("jobId", builder => {
+      builder
+        .select("id")
+        .from("Job")
+        .where({ projectId });
+    })
+    .first();
+  if (!launch) {
+    throw new Error("Build not found");
+  }
+
   return transactionallyExecute(async ({ trx }) => {
     await trx("Launch")
       .update({ isGolden: false })
       .where({ jobId });
-    const changed = await trx("Launch")
+    const [updated] = await trx("Launch")
       .update({ isGolden: true })
-      .where({ id: launchId });
-    if (changed.length === 0) {
-      throw new Error("Setting launch failed");
-    }
-    return 200;
+      .where({ id: launchId })
+      .returning("*");
+
+    return updated;
   });
 };

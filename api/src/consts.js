@@ -19,6 +19,8 @@ const SCREENSHOT_STATUS_COMPLETE = "complete";
 const UPLOAD_DIR = "uploads";
 const SCREENSHOT_DIR = "screenshots";
 
+const LAUNCH_COMPLETE_TIME = 60 * 60;
+
 const RESEMBLE_OPTIONS = {
   ignore: "nothing",
   output: {
@@ -52,6 +54,7 @@ module.exports = {
   SCREENSHOT_STATUS_CREATED,
   SCREENSHOT_STATUS_PROCESSING,
   SCREENSHOT_STATUS_COMPLETE,
+  LAUNCH_COMPLETE_TIME,
   UPLOAD_DIR,
   RESEMBLE_OPTIONS,
   SCREENSHOT_DIR
