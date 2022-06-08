@@ -73,6 +73,11 @@ const useStyles = makeStyles(theme => ({
     }
   },
   controlBox: {
+    [theme.breakpoints.down("sm")]: {
+      flexDirection: "column",
+      justifyContent: "center",
+      alignItems: "center"
+    },
     marginInline: "5vw",
     marginBottom: theme.spacing(5),
     padding: "1rem",
@@ -91,7 +96,28 @@ const useStyles = makeStyles(theme => ({
     marginLeft: theme.spacing(2)
   },
   goldenButton: {
-    marginLeft: "auto"
+    [theme.breakpoints.up("md")]: { marginLeft: "auto" }
+  },
+  cardHeaderRoot: {
+    [theme.breakpoints.down("sm")]: {
+      flexDirection: "column",
+      justifyContent: "center",
+      alignItems: "center"
+    }
+  },
+  cardHeaderAction: {
+    [theme.breakpoints.down("sm")]: {
+      alignSelf: "center",
+      marginTop: theme.spacing(1)
+    }
+  },
+  stats: {
+    [theme.breakpoints.down("sm")]: {
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+      alignItems: "center"
+    }
   }
 }));
 
@@ -260,6 +286,10 @@ export default function JobView() {
       <div className={classes.root}>
         <Card className={classes.boxContent}>
           <CardHeader
+            classes={{
+              root: classes.cardHeaderRoot,
+              action: classes.cardHeaderAction
+            }}
             avatar={
               <Avatar className={classes.avatarHeader}>
                 <PhotoLibraryIcon />
@@ -273,7 +303,7 @@ export default function JobView() {
               </Typography>
             }
             action={
-              <>
+              <Box className={classes.stats}>
                 <Typography>{t("Status: {{status}}", { status: thisLaunch.status })}</Typography>
                 <Typography>
                   {t("Created At: {{createdAt}}", {
@@ -293,7 +323,7 @@ export default function JobView() {
                 <Button href={get(thisLaunch, "url")} variant="contained" target="_blank">
                   Go To Jenkins Build
                 </Button>
-              </>
+              </Box>
             }
           />
 
