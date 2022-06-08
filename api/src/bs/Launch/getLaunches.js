@@ -7,5 +7,6 @@ module.exports = async ({ userId, jobId }) => {
     .innerJoin("Job", "Job.id", "Launch.jobId")
     .innerJoin("Project", "Project.id", "Job.projectId")
     .innerJoin("UserProjectRole", "Project.id", "UserProjectRole.projectId")
-    .where({ "UserProjectRole.userId": userId, "Job.id": jobId });
+    .where({ "UserProjectRole.userId": userId, "Job.id": jobId })
+    .orderBy("createdAt", "desc");
 };

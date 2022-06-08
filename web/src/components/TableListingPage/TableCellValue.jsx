@@ -1,3 +1,6 @@
+/* eslint-disable import/extensions */
+/* eslint-disable import/no-unresolved */
+// we actually need these imports but excluding for now
 import React from "react";
 import get from "lodash/get";
 import { shape } from "prop-types";

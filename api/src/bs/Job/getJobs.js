@@ -6,5 +6,5 @@ module.exports = async ({ userId, projectId }) => {
     .column("Job.*")
     .innerJoin("Project", "Project.id", "Job.projectId")
     .innerJoin("UserProjectRole", "Project.id", "UserProjectRole.projectId")
-    .where({"UserProjectRole.userId": userId, "Project.id": projectId});
+    .where({ "UserProjectRole.userId": userId, "Project.id": projectId });
 };

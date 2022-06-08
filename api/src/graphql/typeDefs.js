@@ -173,5 +173,6 @@ module.exports = gql`
     createApiKey(description: String!): ApiKey
     deleteApiKey(id: ID!): Int
     createScreenshotFromCI(screenshotInput: ScreenshotInput!): String
+    setGolden(projectId: ID!, jobId: ID!, launchId: ID!): Int
   }
 `;

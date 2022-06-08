@@ -18,61 +18,62 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js 16.x
-      uses: actions/setup-node@v1
-      with:
-        node-version: 16.x
-    - name: cache npm
-      id: cache-npm
-      uses: actions/cache@v2
-      with:
-        path: ~/.npm
-        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-node-
+      - uses: actions/checkout@v2
+      - name: Use Node.js 16.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16.x
+      - name: cache npm
+        id: cache-npm
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
 
-    - name: install dependencies
-      if: steps.cache-primes.outputs.cache-hit != 'true'
-      run: |
-        npm i
-        npm --prefix api i
-        npm --prefix web i
-        npm --prefix functions i
-        npm --prefix ci i
+      - name: install dependencies
+        if: steps.cache-primes.outputs.cache-hit != 'true'
+        run: |
+          npm i
+          npm --prefix api i
+          npm --prefix web i
+          npm --prefix functions i
+          npm --prefix ci i
 
-    - name: build functions
-      run: npm run functions:build
+      - name: build functions
+        run: npm run functions:build
 
-    - name: lint
-      run: npm run lint
+      - name: lint
+        run: npm run lint
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js 16.x
-      uses: actions/setup-node@v1
-      with:
-        node-version: 16.x
-    - name: cache npm
-      id: cache-npm
-      uses: actions/cache@v2
-      with:
-        path: ~/.npm
-        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-node-
+      - uses: actions/checkout@v2
+      - name: Use Node.js 16.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16.x
+      - name: cache npm
+        id: cache-npm
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
 
-    - name: install dependencies
-      if: steps.cache-primes.outputs.cache-hit != 'true'
-      run: |
-        npm i
-        npm --prefix api i
-        npm --prefix web i
-        npm --prefix functions i
-        npm --prefix e2e i
-        npm --prefix aig-ftp-sync i
-        npm --prefix chrome-extension i
+      - name: install dependencies
+        if: steps.cache-primes.outputs.cache-hit != 'true'
+        run: |
+          npm i
+          npm --prefix api i
+          npm --prefix web i
+          npm --prefix functions i
 
-    - name: build web
-      run: npm --prefix web run build
+      # npm --prefix e2e i
+      # npm --prefix aig-ftp-sync i
+      # npm --prefix chrome-extension i
+
+      - name: build web
+        run: npm --prefix web run build
