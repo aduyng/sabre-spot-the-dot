@@ -80,7 +80,12 @@ export default function DiffCard({
             root: classes.cardHeaderRoot,
             action: classes.cardHeaderAction
           }}
-          avatar={<CircularProgressWithLabel value={diffPercentage || 0} />}
+          avatar={
+            <CircularProgressWithLabel
+              value={diffPercentage ? diffPercentage % 100 : "NA"}
+              showColorBasedStatus
+            />
+          }
           action={
             <Box display="flex" alignItems="center" paddingTop={1}>
               <Typography className={classes.trunc}>{name}</Typography>

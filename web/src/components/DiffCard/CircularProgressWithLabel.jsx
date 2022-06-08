@@ -5,6 +5,7 @@ import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import { makeStyles } from "@material-ui/core";
 import clsx from "clsx";
+import { clamp, isNumber } from "lodash";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -30,10 +31,13 @@ const useStyles = makeStyles(theme => ({
     strokeLinecap: "round"
   }
 }));
+/**
+ * If passed the "showColorBasedOnStatus" prop, the value will be clamped to 0-100 and used to determine the color of the circle.
+ */
 export default function CircularProgressWithLabel(props) {
   const styles = useStyles();
-  let { value } = props;
-  value %= 100; // needed for demo
+  const { value, showColorBasedStatus } = props;
+  const progress = showColorBasedStatus ? clamp(value, 0, 100) : value;
   return (
     <Box position="relative" display="inline-flex" className={styles.box}>
       <CircularProgress
@@ -47,11 +51,11 @@ export default function CircularProgressWithLabel(props) {
         variant="determinate"
         thickness={4}
         className={clsx(styles.top, {
-          [styles.badStatus]: value >= 75,
-          [styles.mediumStatus]: value >= 50 && value < 75,
-          [styles.goodStatus]: value < 50
+          [styles.badStatus]: progress >= 75,
+          [styles.mediumStatus]: progress >= 50 && progress < 75,
+          [styles.goodStatus]: progress < 50
         })}
-        value={value % 100}
+        value={progress % 100}
         size={50}
         classes={{ circle: styles.circle }}
       />
@@ -66,7 +70,7 @@ export default function CircularProgressWithLabel(props) {
         justifyContent="center"
       >
         <Typography variant="body1" component="div" color="textPrimary">
-          {`${Math.round(value % 100)}%`}
+          {isNumber(value) ? `${Math.round(progress)}%` : "NA"}
         </Typography>
       </Box>
     </Box>
@@ -74,9 +78,10 @@ export default function CircularProgressWithLabel(props) {
 }
 
 CircularProgressWithLabel.propTypes = {
-  /**
-   * The value of the progress indicator for the determinate variant.
-   * Value between 0 and 100.
-   */
-  value: PropTypes.number.isRequired
+  value: PropTypes.number.isRequired,
+  showColorBasedStatus: PropTypes.bool
+};
+
+CircularProgressWithLabel.defaultProps = {
+  showColorBasedStatus: false
 };
