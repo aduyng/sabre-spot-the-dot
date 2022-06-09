@@ -235,22 +235,18 @@ export default function JobView() {
         const {
           data: { setGolden: res }
         } = resp;
-        if (res === 200) {
-          enqueueSnackbar(
-            t("Golden launch set successfully. Golden launch is now {{name}}.", {
-              name: get(thisLaunch, "name", "this launch.")
-            }),
-            { variant: "success" }
-          );
-        } else {
-          enqueueSnackbar(t("You do not have permission to set this launch as golden."), {
-            variant: "error"
-          });
-        }
+        enqueueSnackbar(
+          t("Golden launch set successfully. Golden launch is now {{name}}.", {
+            name: get(res, "name", "this launch.")
+          }),
+          { variant: "success" }
+        );
       })
       .catch(err => {
         const errorAsString = getGraphQLErrorsAsString(err);
-        const translatedError = t("Unable to save because {{error}}", { error: errorAsString });
+        const translatedError = t("Unable to set golden launch. {{error}}", {
+          error: errorAsString
+        });
         enqueueSnackbar(translatedError, {
           variant: "error"
         });
