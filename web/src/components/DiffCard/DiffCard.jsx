@@ -34,14 +34,34 @@ const useStyles = makeStyles(theme => ({
     transform: "rotate(180deg)"
   },
   imagelist: {
+    [theme.breakpoints.down("sm")]: {
+      flexDirection: "column"
+    },
     flexWrap: "nowrap",
     flexGrow: 0,
     flexBasis: 0
+  },
+  imagelistMobile: {
+    flex: 1,
+    flexDirection: "column"
   },
   cardContent: {
     display: "flex",
     alignItems: "center",
     justifyContent: "center"
+  },
+  cardHeaderRoot: {
+    paddingBottom: 0
+  },
+  trunc: {
+    textOverflow: "ellipsis",
+    overflow: "hidden",
+    direction: "rtl",
+    whiteSpace: "nowrap"
+  },
+  cardHeaderAction: {
+    overflow: "hidden",
+    flexShrink: 1
   }
 }));
 export default function DiffCard({
@@ -50,32 +70,37 @@ export default function DiffCard({
   const [expanded, setExpanded] = useState(false);
   const classes = useStyles();
   const handleExpand = () => setExpanded(val => !val);
-  const isXsSmallScreen = useMediaQuery("(max-width:1100px)");
-  const RightButtonCardHeader = () => (
-    <CardHeader
-      avatar={<CircularProgressWithLabel value={diffPercentage || 0} />}
-      action={
-        <Box display="flex" alignItems="center" paddingTop={1}>
-          <Typography>
-            {isXsSmallScreen
-              ? `...
-            ${name.slice(-25)}`
-              : name}
-          </Typography>
-          <IconButton onClick={handleExpand}>
-            <ChevronRightIcon className={expanded ? classes.backwards : null} />
-          </IconButton>
-        </Box>
-      }
-    />
-  );
-
+  const isSmallScreenDown = useMediaQuery("(max-width:1100px)");
+  const isMobile = useMediaQuery("(max-width:600px)");
   return (
-    <Grid item xs={expanded ? 12 : 6}>
+    <Grid item xs={expanded || isMobile ? 12 : isSmallScreenDown ? 6 : 4}>
       <Card className={expanded ? classes.expanded : classes.notExpanded}>
-        <RightButtonCardHeader />
+        <CardHeader
+          classes={{
+            root: classes.cardHeaderRoot,
+            action: classes.cardHeaderAction
+          }}
+          avatar={
+            <CircularProgressWithLabel
+              value={diffPercentage ? diffPercentage % 100 : "NA"}
+              showColorBasedStatus
+            />
+          }
+          action={
+            <Box display="flex" alignItems="center" paddingTop={1}>
+              <Typography className={classes.trunc}>{name}</Typography>
+              <IconButton onClick={handleExpand}>
+                <ChevronRightIcon className={expanded ? classes.backwards : null} />
+              </IconButton>
+            </Box>
+          }
+        />
         <CardContent>
-          <GridList cols={expanded ? 3 : 1} cellHeight={240} className={classes.imagelist}>
+          <GridList
+            cols={expanded && !isMobile ? 3 : 1}
+            cellHeight={240}
+            className={classes.imagelist}
+          >
             <GridListTile className={classes.cardContent}>
               <Zoom>
                 <Img src={diffUrl} alt="diff" label="Difference" />

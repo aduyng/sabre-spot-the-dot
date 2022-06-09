@@ -11,6 +11,7 @@ const getBucket = require("../../firebase/getBucket");
 const getScreenshot = require("./processImageDiff/getScreenshot");
 const getBaseScreenshot = require("./processImageDiff/getBaseScreenshot");
 const getScreenshotContent = require("./getScreenshotContent");
+const updateAvgDiffPercent = require("../Launch/updateAvgDiffPercent");
 
 module.exports = async ({ knex, bucket, name, contentType }) => {
   console.log(`[${__filename}] bucket: ${bucket}, name: ${name}, contentType: ${contentType}`);
@@ -87,5 +88,6 @@ module.exports = async ({ knex, bucket, name, contentType }) => {
       updatedAt: Date.now()
     })
     .where({ id: screenshot.id });
+  await updateAvgDiffPercent({ launchId });
   return true;
 };

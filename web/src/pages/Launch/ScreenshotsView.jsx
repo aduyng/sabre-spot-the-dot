@@ -8,7 +8,6 @@ import DiffCard from "../../components/DiffCard/DiffCard";
 const useStyles = makeStyles({
   grid: {
     width: "90vw",
-    minHeight: "100vh",
     margin: "0 auto"
   },
   emptyText: {
@@ -29,7 +28,7 @@ export default function ScreenshotsView({ screenshots }) {
   }, []);
 
   return (
-    <Grid container innerRef={grid} spacing={2} className={styles.grid}>
+    <Grid container innerRef={grid} spacing={1} className={styles.grid}>
       {screenshots && screenshots.length > 0 ? (
         screenshots.map(sc => {
           return <DiffCard screenshot={sc} key={sc.id} />;
