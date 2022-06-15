@@ -1,24 +1,29 @@
 import { useQuery } from "@apollo/react-hooks";
+import { makeStyles } from "@material-ui/core";
 import Avatar from "@material-ui/core/Avatar";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CardHeader from "@material-ui/core/CardHeader";
-import makeStyles from "@material-ui/core/styles/makeStyles";
 import AccountTreeIcon from "@material-ui/icons/AccountTree";
 import FlightTakeoffIcon from "@material-ui/icons/FlightTakeoff";
+import SettingsIcon from "@material-ui/icons/Settings";
 import HomeIcon from "@material-ui/icons/Home";
 import WorkIcon from "@material-ui/icons/Work";
-import { get } from "lodash";
+import get from "lodash/get";
 import { useSnackbar } from "notistack";
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import Typography from "@material-ui/core/Typography";
+import IconButton from "@material-ui/core/IconButton/";
+import Box from "@material-ui/core/Box";
+import Collapse from "@material-ui/core/Collapse";
 import Page from "../../components/Page/Page";
 import PageTitle from "../../components/PageTitle";
 import GET_JOB from "./GET_JOB.gql";
 import LaunchesList from "./LaunchesList";
 import PageLoader from "../../components/PageLoader";
+import JobSettings from "./JobSettings";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -35,7 +40,7 @@ const useStyles = makeStyles(theme => ({
     width: "100%",
     "& .MuiCardContent-root": {
       paddingLeft: theme.spacing(0),
-      paddingRight: theme.spacing(4)
+      paddingRight: theme.spacing(0)
     }
   },
   toolbar: {
@@ -53,12 +58,20 @@ const useStyles = makeStyles(theme => ({
       width: "unset",
       marginTop: "unset"
     }
+  },
+  gearBox: {
+    display: "flex",
+    justifyContent: "flex-end",
+    gap: theme.spacing(1),
+    alignItems: "center",
+    marginTop: theme.spacing(1)
   }
 }));
 
 export default function JobView() {
   const classes = useStyles();
   const { t } = useTranslation();
+  const [collapse, setCollapse] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
   const { jobId, projectId } = useParams();
   const { data, error } = useQuery(GET_JOB, {
@@ -72,6 +85,8 @@ export default function JobView() {
     }),
     [data]
   );
+
+  const toggleCollapse = () => setCollapse(c => !c);
   if (error) {
     enqueueSnackbar(error && error.message, { variant: "error" });
     return null;
@@ -110,9 +125,20 @@ export default function JobView() {
             title={
               <Typography variant="h3">{t("Builds for {{job}}", { job: job.name })}</Typography>
             }
+            action={
+              <Box className={classes.gearBox}>
+                <Typography>Job Settings</Typography>
+                <IconButton onClick={toggleCollapse}>
+                  <SettingsIcon />
+                </IconButton>
+              </Box>
+            }
             disableTypography
           />
           <CardContent>
+            <Collapse in={collapse}>
+              <JobSettings />
+            </Collapse>
             <LaunchesList launches={launches} />
           </CardContent>
         </Card>

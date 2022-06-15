@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import { func, bool } from "prop-types";
 import { Link, useLocation } from "react-router-dom";
-import makeStyles from "@material-ui/core/styles/makeStyles";
+import { makeStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";

@@ -7,7 +7,7 @@ import size from "lodash/size";
 import last from "lodash/last";
 import { arrayOf, elementType, shape, string } from "prop-types";
 import { useHistory } from "react-router-dom";
-import makeStyles from "@material-ui/core/styles/makeStyles";
+import { makeStyles } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 const useStyles = makeStyles(theme => ({

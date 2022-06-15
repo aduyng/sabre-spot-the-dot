@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import get from "lodash/get";
 import useFetch from "use-http";
 import { useSnackbar } from "notistack";
-import makeStyles from "@material-ui/core/styles/makeStyles";
+import { makeStyles } from "@material-ui/core/styles";
 import { useConfig } from "../../contexts/ConfigContext";
 import { NEW_VERSION_CHECK_INTERVAL } from "../../consts";
 import SuccessButton from "../SuccessButton";

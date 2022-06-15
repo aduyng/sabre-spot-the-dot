@@ -1,7 +1,7 @@
 import React from "react";
 import { shape, string } from "prop-types";
 import ParticlesBg from "particles-bg";
-import makeStyles from "@material-ui/core/styles/makeStyles";
+import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import { useTranslation } from "react-i18next";
 import Grid from "@material-ui/core/Grid";

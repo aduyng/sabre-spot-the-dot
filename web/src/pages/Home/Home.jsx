@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import { useSnackbar } from "notistack";
 import { useQuery } from "@apollo/react-hooks";
-import makeStyles from "@material-ui/core/styles/makeStyles";
+import { makeStyles } from "@material-ui/core/styles";
 import { useTranslation } from "react-i18next";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";

@@ -1,6 +1,6 @@
 import React from "react";
 import { arrayOf, bool, func, instanceOf, oneOfType, shape, string, number } from "prop-types";
-import makeStyles from "@material-ui/core/styles/makeStyles";
+import { makeStyles } from "@material-ui/core/styles";
 import { useTranslation } from "react-i18next";
 import { grey, red } from "@material-ui/core/colors";
 import formatDistanceToNow from "date-fns/formatDistanceToNow";

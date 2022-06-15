@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import makeStyles from "@material-ui/core/styles/makeStyles";
+import { makeStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import map from "lodash/map";
 import every from "lodash/every";

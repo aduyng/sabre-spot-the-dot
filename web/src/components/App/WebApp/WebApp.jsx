@@ -8,7 +8,7 @@ import { SnackbarProvider } from "notistack";
 import isEmpty from "lodash/isEmpty";
 import DateFnsUtils from "@date-io/date-fns";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
-import makeStyles from "@material-ui/core/styles/makeStyles";
+import { makeStyles } from "@material-ui/core/styles";
 import ConfiguredApp from "./ConfiguredApp/ConfiguredApp";
 import createTheme from "../../../styles/theme";
 import ConfigContext from "../../../contexts/ConfigContext";

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import TextField from "@material-ui/core/TextField";
 import MenuItem from "@material-ui/core/MenuItem";
-import makeStyles from "@material-ui/core/styles/makeStyles";
+import { makeStyles } from "@material-ui/core/styles";
 import { string, number, func, arrayOf, shape, oneOfType, bool } from "prop-types";
 import map from "lodash/map";
 import isEmpty from "lodash/isEmpty";

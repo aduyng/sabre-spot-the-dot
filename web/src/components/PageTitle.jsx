@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo } from "react";
 import { useHistory } from "react-router-dom";
-import makeStyles from "@material-ui/core/styles/makeStyles";
+import { makeStyles } from "@material-ui/core/styles";
 import Helmet from "react-helmet";
 import { useTranslation } from "react-i18next";
 import Typography from "@material-ui/core/Typography";
