@@ -77,11 +77,12 @@ export default function JobView() {
   const { data, error } = useQuery(GET_JOB, {
     variables: { id: jobId, projectId }
   });
-  const { launches, job, project } = useMemo(
+  const { launches, job, project, config } = useMemo(
     () => ({
       launches: get(data, "getLaunches"),
       job: get(data, "getJob"),
-      project: get(data, "getProject")
+      project: get(data, "getProject"),
+      config: get(data, "getResembleConfig")
     }),
     [data]
   );
@@ -127,17 +128,21 @@ export default function JobView() {
             }
             action={
               <Box className={classes.gearBox}>
-                <Typography>Job Settings</Typography>
-                <IconButton onClick={toggleCollapse}>
-                  <SettingsIcon />
-                </IconButton>
+                {config && (
+                  <>
+                    <Typography>Job Settings</Typography>
+                    <IconButton onClick={toggleCollapse}>
+                      <SettingsIcon />
+                    </IconButton>
+                  </>
+                )}
               </Box>
             }
             disableTypography
           />
           <CardContent>
             <Collapse in={collapse}>
-              <JobSettings />
+              <JobSettings config={config} />
             </Collapse>
             <LaunchesList launches={launches} />
           </CardContent>

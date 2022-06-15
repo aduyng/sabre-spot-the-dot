@@ -140,6 +140,32 @@ module.exports = gql`
     branch: String
   }
 
+  input ResembleConfigInput {
+    overlay: RGB
+    ignoreMethod: String
+    errorMethod: String
+    transparency: Int
+  }
+
+  type ResembleConfigColor {
+    red: Int!
+    green: Int!
+    blue: Int!
+  }
+
+  type ResembleConfigOutput {
+    errorColor: ResembleConfigColor!
+    errorType: String!
+    outputDiff: Boolean!
+    transparency: Float!
+  }
+
+  type ResembleConfig {
+    ignore: String!
+    output: ResembleConfigOutput!
+    scaleToSameSize: Boolean!
+  }
+
   type Screenshot {
     id: ID!
     launchId: ID!
@@ -165,6 +191,7 @@ module.exports = gql`
     getLaunch(id: ID!): Launch
     getGoldenLaunch(id: ID!): Launch
     getScreenshots(id: ID!): [Screenshot]
+    getResembleConfig(jobId: ID!): ResembleConfig
   }
 
   type Mutation {
@@ -173,5 +200,6 @@ module.exports = gql`
     deleteApiKey(id: ID!): Int
     createScreenshotFromCI(screenshotInput: ScreenshotInput!): String
     setGolden(projectId: ID!, jobId: ID!, launchId: ID!): Launch
+    updateResembleConfig(projectId: ID!, jobId: ID!, config: ResembleConfigInput!): Int
   }
 `;

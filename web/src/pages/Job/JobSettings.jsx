@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useMutation } from "@apollo/react-hooks";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
@@ -12,11 +13,18 @@ import Box from "@material-ui/core/Box";
 import FormControl from "@material-ui/core/FormControl";
 import { useTranslation } from "react-i18next";
 import { RgbColorPicker } from "react-colorful";
+import { useSnackbar } from "notistack";
 import clamp from "lodash/clamp";
 import map from "lodash/map";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
-import { startCase } from "lodash";
+import startCase from "lodash/startCase";
+import get from "lodash/get";
 import clsx from "clsx";
+import Slider from "@material-ui/core/Slider";
+import { shape, string, number } from "prop-types";
+
+import { useParams } from "react-router-dom";
+import UPDATE_CONFIG from "./UPDATE_CONFIG.gql";
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -43,30 +51,37 @@ const colors = [
   { name: "Blue", key: "b" }
 ];
 
-const diffIgnore = [
-  "ignore nothing",
-  "ignore less",
-  "ignore colors",
-  "ignore antialiasing",
-  "ignore alpha"
-];
+const diffIgnore = ["nothing", "less", "colors", "antialiasing", "alpha"];
 
 const colorMethods = [
   "flat",
   "movement",
-  "flat with diff intensity",
-  "movement with diff intensity",
-  "diff portion from the input"
+  "flatDifferenceIntensity",
+  "movementDifferenceIntensity",
+  "diffOnly"
 ];
 
-export default function JobSettings() {
+const getColorFromConfig = config => {
+  return {
+    r: get(config, ["output", "errorColor", "red"]),
+    g: get(config, ["output", "errorColor", "green"]),
+    b: get(config, ["output", "errorColor", "blue"])
+  };
+};
+
+export default function JobSettings({ config }) {
+  const { enqueueSnackbar } = useSnackbar();
   const { t } = useTranslation();
   const classes = useStyles();
-  const [color, setColor] = useState({ r: 255, g: 0, b: 255 });
-  const [values, setValues] = useState({ r: 255, g: 0, b: 255 });
-
-  const [ignoreOption, setIgnoreOption] = useState(diffIgnore[0]);
-  const [colorMethod, setColorMethod] = useState(colorMethods[0]);
+  const [saveConfig] = useMutation(UPDATE_CONFIG);
+  const { jobId, projectId } = useParams();
+  const [color, setColor] = useState(() => getColorFromConfig(config));
+  const [values, setValues] = useState(() => getColorFromConfig(config));
+  const [ignoreOption, setIgnoreOption] = useState(() => get(config, "ignore"));
+  const [colorMethod, setColorMethod] = useState(() => get(config, ["output", "errorType"]));
+  const [transparency, setTransparency] = useState(
+    () => get(config, ["output", "transparency"]) * 100
+  );
 
   const createColorChangeHandler = key => e => {
     const { value } = e.target;
@@ -93,11 +108,37 @@ export default function JobSettings() {
     setColorMethod(e.target.value);
   };
 
+  const handleTransparencyChange = (_, value) => {
+    setTransparency(value);
+  };
+
   const handleResetDefaults = () => {
     setIgnoreOption(diffIgnore[0]);
     setColorMethod(colorMethods[0]);
     setColor({ r: 255, g: 0, b: 255 });
     setValues({ r: 255, g: 0, b: 255 });
+    setTransparency(100);
+  };
+
+  const handleSave = async () => {
+    saveConfig({
+      variables: {
+        jobId,
+        projectId,
+        config: {
+          overlay: `rgb(${color.r}, ${color.g}, ${color.b})`,
+          ignoreMethod: ignoreOption,
+          errorMethod: colorMethod,
+          transparency
+        }
+      }
+    })
+      .then(() => {
+        enqueueSnackbar("New config successfully saved!", { variant: "success" });
+      })
+      .catch(err => {
+        enqueueSnackbar(`Error saving config: ${err && err.message}`, { variant: "error" });
+      });
   };
 
   return (
@@ -108,7 +149,7 @@ export default function JobSettings() {
         </Typography>
         <RgbColorPicker color={color} onChange={colorPickerHandler} />
       </Grid>
-      <Grid item xs={2} className={classes.itemCenter}>
+      <Grid item xs={1} className={clsx(classes.itemCenter, classes.topPadding)}>
         {map(colors, ({ name, key }) => (
           <ClickAwayListener onClickAway={onBlur}>
             <TextField
@@ -119,6 +160,22 @@ export default function JobSettings() {
             />
           </ClickAwayListener>
         ))}
+      </Grid>
+      <Grid item xs={1} className={clsx(classes.itemCenter, classes.topPadding)}>
+        <Typography component="label" htmlFor="transparency-slider">
+          Transparency
+        </Typography>
+        <Typography component="label" htmlFor="transparency-slider">
+          {`${transparency}%`}
+        </Typography>
+        <Slider
+          id="transparency-slider"
+          orientation="vertical"
+          value={transparency}
+          min={0}
+          max={100}
+          onChange={handleTransparencyChange}
+        />
       </Grid>
       <Grid item xs={3} className={clsx(classes.itemCenter, classes.topPadding)}>
         <FormControl>
@@ -139,7 +196,7 @@ export default function JobSettings() {
                     value={option}
                     key={option}
                     control={<Radio />}
-                    label={startCase(option)}
+                    label={`Ignore ${startCase(option)}`}
                   />
                 ))}
               </RadioGroup>
@@ -176,7 +233,7 @@ export default function JobSettings() {
           <Button variant="contained" color="secondary" fullWidth onClick={handleResetDefaults}>
             Reset Defaults
           </Button>
-          <Button variant="contained" color="primary" fullWidth>
+          <Button variant="contained" color="primary" fullWidth onClick={handleSave}>
             Save
           </Button>
           <Link target="_blank" href="http://rsmbl.github.io/Resemble.js/">
@@ -187,3 +244,18 @@ export default function JobSettings() {
     </Grid>
   );
 }
+
+JobSettings.propTypes = {
+  config: shape({
+    ignore: string.isRequired,
+    output: shape({
+      errorColor: shape({
+        red: number.isRequired,
+        green: number.isRequired,
+        blue: number.isRequired
+      }),
+      transparency: number.isRequired,
+      errorType: string.isRequired
+    })
+  }).isRequired
+};
