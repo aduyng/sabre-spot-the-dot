@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import makeStyles from "@material-ui/core/styles/makeStyles";
+import { makeStyles } from "@material-ui/core/styles";
 import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
 import Fab from "@material-ui/core/Fab";
 import debounce from "lodash/debounce";

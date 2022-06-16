@@ -2,7 +2,6 @@ const Promise = require("bluebird");
 const compareImages = require("resemblejs/compareImages");
 const {
   SCREENSHOT_DIR,
-  RESEMBLE_OPTIONS,
   SCREENSHOT_STATUS_PROCESSING,
   SCREENSHOT_STATUS_COMPLETE,
   UPLOAD_DIR
@@ -12,6 +11,7 @@ const getScreenshot = require("./processImageDiff/getScreenshot");
 const getBaseScreenshot = require("./processImageDiff/getBaseScreenshot");
 const getScreenshotContent = require("./getScreenshotContent");
 const updateAvgDiffPercent = require("../Launch/updateAvgDiffPercent");
+const getResembleConfig = require("../Job/getResembleConfig");
 
 module.exports = async ({ knex, bucket, name, contentType }) => {
   console.log(`[${__filename}] bucket: ${bucket}, name: ${name}, contentType: ${contentType}`);
@@ -65,11 +65,9 @@ module.exports = async ({ knex, bucket, name, contentType }) => {
 
   console.log(`got the base and the screenshot, start the comparison`);
 
-  const compareResult = await compareImages(
-    screenshotContent,
-    baseScreenshotContent,
-    RESEMBLE_OPTIONS
-  );
+  const options = await getResembleConfig({ jobId });
+
+  const compareResult = await compareImages(screenshotContent, baseScreenshotContent, options);
 
   const fileNameParts = screenshot.name.split(".");
   const extension = fileNameParts.pop();

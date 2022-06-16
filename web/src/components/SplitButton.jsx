@@ -11,7 +11,7 @@ import MenuList from "@material-ui/core/MenuList";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import { arrayOf, string, shape, func, element, bool, oneOfType } from "prop-types";
-import makeStyles from "@material-ui/core/styles/makeStyles";
+import { makeStyles } from "@material-ui/core/styles";
 import isEmpty from "lodash/isEmpty";
 import clsx from "clsx";
 import { Link } from "react-router-dom";

@@ -4,7 +4,7 @@ import clsx from "clsx";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
-import makeStyles from "@material-ui/core/styles/makeStyles";
+import { makeStyles } from "@material-ui/core/styles";
 import formatPercentage from "../libs/formatPercentage";
 
 const useStyles = makeStyles(theme => ({

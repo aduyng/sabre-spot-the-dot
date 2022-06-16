@@ -2,7 +2,7 @@ import React from "react";
 import { element, bool, string } from "prop-types";
 import Toolbar from "@material-ui/core/Toolbar";
 import clsx from "clsx";
-import makeStyles from "@material-ui/core/styles/makeStyles";
+import { makeStyles } from "@material-ui/core/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
 const useStyles = makeStyles(theme => ({

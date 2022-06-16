@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useMutation } from "@apollo/react-hooks";
 import { useParams } from "react-router-dom";
 import { useSnackbar } from "notistack";
-import makeStyles from "@material-ui/core/styles/makeStyles";
+import { makeStyles } from "@material-ui/core/styles";
 import { useTranslation } from "react-i18next";
 import Toolbar from "@material-ui/core/Toolbar";
 import Button from "@material-ui/core/Button";

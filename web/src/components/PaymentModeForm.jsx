@@ -2,7 +2,7 @@
 import React, { useCallback, useState } from "react";
 import { string, func, bool, number, shape, arrayOf } from "prop-types";
 import TextField from "@material-ui/core/TextField";
-import makeStyles from "@material-ui/core/styles/makeStyles";
+import { makeStyles } from "@material-ui/core/styles";
 import { useTranslation } from "react-i18next";
 import isLength from "validator/lib/isLength";
 import trim from "lodash/trim";

@@ -31,5 +31,17 @@ export default gql`
       id
       name
     }
+    getResembleConfig(jobId: $id) {
+      ignore
+      output {
+        errorColor {
+          red
+          green
+          blue
+        }
+        errorType
+        transparency
+      }
+    }
   }
 `;
