@@ -1,6 +1,5 @@
-import { withStyles } from "@material-ui/core/styles";
+import { withStyles, lighten } from "@material-ui/core/styles";
 import TableCell from "@material-ui/core/TableCell";
-import { lighten } from "@material-ui/core/styles/colorManipulator";
 
 export default withStyles(theme => {
   const backgroundColor = lighten(theme.palette.primary.main, 0.25);

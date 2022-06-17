@@ -1,4 +1,4 @@
-import createTheme from "@material-ui/core/styles/createMuiTheme";
+import { createTheme } from "@material-ui/core/styles";
 import katana from "../components/App/katana";
 
 export default () => {
