@@ -24,7 +24,7 @@
     "graphql-scalars": "^1.14.1",
     "graphql-tag": "^2.11.0",
     "graphql-type-json": "^0.3.2",
-    "knex": "^0.21.19",
+    "knex": "~0.21.19",
     "lodash": "^4.17.21",
     "minimist": "^1.2.6",
     "numeral": "^2.0.6",
