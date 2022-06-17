@@ -5,7 +5,7 @@ import Avatar from "@material-ui/core/Avatar";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CardHeader from "@material-ui/core/CardHeader";
-import makeStyles from "@material-ui/core/styles/makeStyles";
+import { makeStyles } from "@material-ui/core";
 import AccountTreeIcon from "@material-ui/icons/AccountTree";
 import FlightTakeoffIcon from "@material-ui/icons/FlightTakeoff";
 import HomeIcon from "@material-ui/icons/Home";
@@ -235,22 +235,18 @@ export default function JobView() {
         const {
           data: { setGolden: res }
         } = resp;
-        if (res === 200) {
-          enqueueSnackbar(
-            t("Golden launch set successfully. Golden launch is now {{name}}.", {
-              name: get(thisLaunch, "name", "this launch.")
-            }),
-            { variant: "success" }
-          );
-        } else {
-          enqueueSnackbar(t("You do not have permission to set this launch as golden."), {
-            variant: "error"
-          });
-        }
+        enqueueSnackbar(
+          t("Golden launch set successfully. Golden launch is now {{name}}.", {
+            name: get(res, "name", "this launch.")
+          }),
+          { variant: "success" }
+        );
       })
       .catch(err => {
         const errorAsString = getGraphQLErrorsAsString(err);
-        const translatedError = t("Unable to save because {{error}}", { error: errorAsString });
+        const translatedError = t("Unable to set golden launch. {{error}}", {
+          error: errorAsString
+        });
         enqueueSnackbar(translatedError, {
           variant: "error"
         });

@@ -1,4 +1,3 @@
-
 module.exports = {
   env: {
     node: true,
@@ -9,12 +8,24 @@ module.exports = {
   settings: {
     react: {
       version: "16.13.0"
-    },
+    }
   },
   rules: {
+    "no-restricted-imports": [
+      "error",
+      {
+        patterns: ["@material-ui/*/*/*", "!@material-ui/core/test-utils/*"]
+      }
+    ],
     "no-console": 0,
-    "import/no-extraneous-dependencies": ["error", {"devDependencies": true, "optionalDependencies": false, "peerDependencies": false}],
+    "import/no-extraneous-dependencies": [
+      "error",
+      { devDependencies: true, optionalDependencies: false, peerDependencies: false }
+    ],
     "prettier/prettier": ["error"],
-    "no-param-reassign": ["error", { "props": true, "ignorePropertyModificationsForRegex": ["^memo", "^keep", "^remember"] }]
+    "no-param-reassign": [
+      "error",
+      { props: true, ignorePropertyModificationsForRegex: ["^memo", "^keep", "^remember"] }
+    ]
   }
 };

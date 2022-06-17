@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Box from "@material-ui/core/Box";
-import makeStyles from "@material-ui/core/styles/makeStyles";
+import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import ViewColumnIcon from "@material-ui/icons/ViewColumn";
 import { useTranslation } from "react-i18next";

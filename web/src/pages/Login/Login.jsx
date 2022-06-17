@@ -4,7 +4,7 @@ import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 import Paper from "@material-ui/core/Paper";
 import firebase from "firebase/app";
 import "firebase/auth";
-import makeStyles from "@material-ui/core/styles/makeStyles";
+import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import { useTranslation } from "react-i18next";
 import Helmet from "react-helmet";

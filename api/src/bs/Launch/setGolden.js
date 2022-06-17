@@ -7,7 +7,7 @@ module.exports = async ({ launchId, projectId, jobId, userId }) => {
   if (!auth) {
     throw new Error("Permission denied.");
   }
-  const knex = connectDb();
+  const knex = await connectDb();
   const launch = await knex("Launch")
     .where({ "Launch.id": launchId, "Launch.jobId": jobId })
     .whereIn("jobId", builder => {
@@ -26,10 +26,9 @@ module.exports = async ({ launchId, projectId, jobId, userId }) => {
       .update({ isGolden: false })
       .where({ jobId });
     const [updated] = await trx("Launch")
-      .update({ isGolden: true })
+      .update({ isGolden: true, updatedAt: Date.now(), updatedByUserId: userId })
       .where({ id: launchId })
       .returning("*");
-
     return updated;
   });
 };

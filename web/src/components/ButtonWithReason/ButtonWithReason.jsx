@@ -1,7 +1,7 @@
 import React from "react";
 import Button from "@material-ui/core/Button";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
-import makeStyles from "@material-ui/core/styles/makeStyles";
+import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import noop from "lodash/noop";
 import Tooltip from "@material-ui/core/Tooltip";

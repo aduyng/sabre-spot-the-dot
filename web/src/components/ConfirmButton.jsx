@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { bool, func, shape, string } from "prop-types";
-import makeStyles from "@material-ui/core/styles/makeStyles";
+import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import ConfirmDialog from "./ConfirmDialog";
 import ButtonWithReason from "./ButtonWithReason/ButtonWithReason";

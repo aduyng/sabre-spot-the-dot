@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { oneOfType, node, arrayOf, string } from "prop-types";
-import makeStyles from "@material-ui/core/styles/makeStyles";
+import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import isEmpty from "lodash/isEmpty";
 // import { lighten } from "@material-ui/core/styles/colorManipulator";

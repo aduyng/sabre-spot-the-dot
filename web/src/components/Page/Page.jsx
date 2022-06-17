@@ -1,6 +1,6 @@
 import React from "react";
 import { node, oneOfType, arrayOf, bool, string } from "prop-types";
-import makeStyles from "@material-ui/core/styles/makeStyles";
+import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import PageLoader from "../PageLoader";
 
