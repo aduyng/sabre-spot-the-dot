@@ -2,11 +2,10 @@ import React from "react";
 import { string } from "prop-types";
 import Box from "@material-ui/core/Box";
 import "firebase/auth";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
 import ProgressiveImage from "react-progressive-image";
 import clsx from "clsx";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import useTheme from "@material-ui/core/styles/useTheme";
 
 const useStyles = makeStyles(theme => {
   return {

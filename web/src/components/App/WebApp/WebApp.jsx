@@ -1,14 +1,13 @@
 import React, { useMemo } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { ThemeProvider } from "@material-ui/core/styles";
+import { ThemeProvider, makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { ApolloProvider, useQuery } from "@apollo/react-hooks";
 import { SnackbarProvider } from "notistack";
 import isEmpty from "lodash/isEmpty";
 import DateFnsUtils from "@date-io/date-fns";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
-import { makeStyles } from "@material-ui/core/styles";
 import ConfiguredApp from "./ConfiguredApp/ConfiguredApp";
 import createTheme from "../../../styles/theme";
 import ConfigContext from "../../../contexts/ConfigContext";
