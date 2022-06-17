@@ -132,7 +132,7 @@ module.exports = gql`
     projectId: ID!
     fileName: String!
     buildUrl: String
-    buildNumber: PositiveInt
+    buildNumber: Int
     buildName: String
     jobName: String!
     jobUrl: String
@@ -145,7 +145,7 @@ module.exports = gql`
     launchId: ID!
     name: String!
     diff: String
-    diffPercentage: PositiveInt
+    diffPercentage: Int
     status: String!
     createdAt: BigInt
     createdByUserId: ID
